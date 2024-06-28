@@ -25,7 +25,7 @@ class EspacoModel {
 
 
   readList() {
-    const sql = "SELECT IdEspaco, Nome, Cep, Endereco, Numero, Complemento, Cidade, Estado, Telefone, Email FROM Espaco";
+    const sql = "SELECT Espaco.IdEspaco, Espaco.Nome, Espaco.Ativo, Espaco.IdEspacoCultural, EspacoCultural.Nome AS NomeEspacoCultural FROM Espaco JOIN EspacoCultural ON Espaco.IdEspacoCultural = EspacoCultural.IdEspacoCultural";
     return this.executeSQL(sql); 
   }
 
