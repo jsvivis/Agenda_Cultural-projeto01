@@ -1,9 +1,7 @@
 
 const dbConnection = require("../db/dbConnection");
 
-
 class UsuarioModel {
-
   
   executeSQL(sql, parametros = "") {
     
@@ -22,7 +20,6 @@ class UsuarioModel {
       }
     );
   }
-
 
   readList() {
       const sql = `SELECT Usuario.IdUsuario, Usuario.Nome, Usuario.Email, Usuario.Ativo, Usuario.IdPerfil, Perfil.PerfilUsuario FROM  Usuario 

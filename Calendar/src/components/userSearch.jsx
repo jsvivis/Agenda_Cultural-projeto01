@@ -1,10 +1,27 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import axios from "axios";
 
 function UserSearch() {
   const [searchTerm, setSearchTerm] = useState("");
   const [users, setUsers] = useState([]);
   const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const response = await axios.get("http://localhost:3000/usuario");
+        setUsers(response.data);
+        setError(null);
+      } catch (error) {
+        console.error(error);
+        setUsers([]);
+        setError("Erro ao carregar usuários");
+      }
+    };
+
+    fetchUsers();
+  }, []);
 
   const handleChange = (event) => {
     setSearchTerm(event.target.value);
@@ -14,8 +31,7 @@ function UserSearch() {
     event.preventDefault();
     try {
       const response = await axios.get(`http://localhost:3000/usuario/${searchTerm}`);
-      console.log(response)
-      setUsers(response.data);;
+      setUsers(response.data);
       setError(null);
     } catch (error) {
       console.error(error);
@@ -45,17 +61,21 @@ function UserSearch() {
         <table className="table">
           <thead>
             <tr>
+              <th>Id</th>
               <th>Nome</th>
               <th>Email</th>
-              <th>Senha</th>
+              <th>Ações</th>
             </tr>
           </thead>
           <tbody>
             {users.map((user) => (
-              <tr key={user.id}>
+              <tr key={user.IdUsuario}>
+                <td>{user.IdUsuario}</td>
                 <td>{user.Nome}</td>
                 <td>{user.Email}</td>
-                <td>{user.Senha}</td>
+                <td>
+                  <Link to={`/update-user/${user.IdUsuario}`} className="btn btn-warning">Editar</Link>
+                </td>
               </tr>
             ))}
           </tbody>
