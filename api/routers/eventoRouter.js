@@ -6,6 +6,7 @@ router.get("/evento", eventoController.readList);
 router.get("/evento/:id", eventoController.read);
 router.post("/evento", eventoController.create);
 router.put("/evento/:id", eventoController.update);
+router.put("/eventoliberar/:id", eventoController.updateLiberar);
 router.delete("/evento/:id", eventoController.delete);
 
 module.exports = router;

@@ -14,12 +14,28 @@ class EventoModel {
   }
 
   readList() {
-    const sql = "SELECT IdEvento, Nome, Descricao, ImagemEvento, Horario, Valor, Publico, Ativo, IdUsuario, IdEspaco FROM Evento";
+    const sql =  `SELECT 
+        Evento.IdEvento, Evento.Nome, Evento.Descricao, Evento.ImagemEvento, Evento.HorarioInicial, Evento.HorarioFinal, Evento.Valor, 
+        Evento.Publico, Evento.PublicoTotal, Evento.Ativo, Evento.IdUsuario, Evento.IdEspaco, UsuarioCriador.Nome AS NomeUsuario,
+        Espaco.Nome AS NomeEspaco, Evento.Liberado, UsuarioLiberacao.Nome AS NomeUsuarioLiberacao
+    FROM Evento
+    JOIN Usuario AS UsuarioCriador ON Evento.IdUsuario = UsuarioCriador.IdUsuario
+    JOIN Espaco ON Evento.IdEspaco = Espaco.IdEspaco
+    LEFT JOIN Usuario AS UsuarioLiberacao ON Evento.Liberado = UsuarioLiberacao.IdUsuario`;
     return this.executeSQL(sql); 
   }
 
   read(id) {
-    const sql = "SELECT IdEvento, Nome, Descricao, ImagemEvento, Horario, Valor, Publico, Ativo, IdUsuario, IdEspaco FROM Evento WHERE IdEvento = ?"; 
+    const sql = `
+        SELECT 
+            Evento.IdEvento, Evento.Nome, Evento.Descricao, Evento.ImagemEvento, Evento.HorarioInicial, Evento.HorarioFinal, Evento.Valor,    
+            Evento.Publico, Evento.PublicoTotal, Evento.Ativo, Evento.IdUsuario, Evento.IdEspaco, UsuarioCriador.Nome AS NomeUsuario,
+            Espaco.Nome AS NomeEspaco, Evento.Liberado, UsuarioLiberacao.Nome AS NomeUsuarioLiberacao
+        FROM Evento 
+        JOIN Usuario AS UsuarioCriador ON Evento.IdUsuario = UsuarioCriador.IdUsuario 
+        JOIN Espaco ON Evento.IdEspaco = Espaco.IdEspaco 
+        LEFT JOIN Usuario AS UsuarioLiberacao ON Evento.Liberado = UsuarioLiberacao.IdUsuario 
+        WHERE Evento.IdEvento = ?`;
     return this.executeSQL(sql, id); 
   }
 
@@ -31,6 +47,11 @@ class EventoModel {
   update(updateEvento, id) {
     const sql = "UPDATE Evento SET ? WHERE IdEvento = ?";
     return this.executeSQL(sql, [updateEvento, id]); 
+  }
+
+  updateLiberar(liberar, id) {
+    const sql = "UPDATE Evento SET Liberado = ? WHERE IdEvento = ?";
+    return this.executeSQL(sql, [liberar, id]); 
   }
 
   delete(id) {

@@ -1,6 +1,7 @@
 const perfilRouters = require("./perfilRouter.js");
 const usuarioRouters = require("./usuarioRouter.js");
 const espacoRouters = require("./espacoRouter.js");
+const espacoCulturalRouters = require("./espacoCulturalRouter.js");
 const arquivoRouters = require("./arquivoRouter.js");
 const eventoRouters = require("./eventoRouter.js");
 const linkRouters = require("./linkRouter.js");
@@ -16,6 +17,7 @@ module.exports = function (app, express) {
   app.use(perfilRouters);
   app.use(usuarioRouters);
   app.use(espacoRouters);
+  app.use(espacoCulturalRouters);
   app.use(arquivoRouters);
   app.use(eventoRouters);
   app.use(linkRouters);

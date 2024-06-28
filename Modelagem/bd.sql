@@ -4,7 +4,7 @@ USE agenda;
 /* Um tipo de perfil diferente para somente administradores poderem fazer certas ações */
 CREATE TABLE Perfil ( 
     IdPerfil INT PRIMARY KEY AUTO_INCREMENT,
-    PerfilUsuario ENUM('ADMINISTRADOR','COLABORADOR','USUARIO') DEFAULT 'USUARIO'
+    PerfilUsuario ENUM('ADMINISTRADOR', 'USUARIO') DEFAULT 'USUARIO'
 );
 
 /* Usuário para fazer login associado a um tipo de perfil --> não deletar só inativar para manter integridade referencial */
@@ -14,7 +14,7 @@ CREATE TABLE Usuario (
     Email VARCHAR(50) NOT NULL UNIQUE,
     Senha VARCHAR(255) NOT NULL,
     Ativo BOOLEAN DEFAULT TRUE,
-    IdPerfil INT,
+    IdPerfil INT NOT NULL DEFAULT 2,
     FOREIGN KEY (IdPerfil) REFERENCES Perfil(IdPerfil) ON DELETE CASCADE,
     INDEX idx_usuario_ativo (Ativo),
     INDEX idx_usuario_email (Email)
@@ -26,12 +26,12 @@ CREATE TABLE Categoria (
     Nome VARCHAR(30) NOT NULL,
     Ativo BOOLEAN DEFAULT TRUE,
     Cor VARCHAR(30) NOT NULL,
-	INDEX idx_categoria_ativo (Ativo)
+    INDEX idx_categoria_ativo (Ativo)
 );
 
 /* Armazenar os espaços culturais */
-CREATE TABLE Espaco (
-    IdEspaco INT PRIMARY KEY AUTO_INCREMENT,
+CREATE TABLE EspacoCultural (
+    IdEspacoCultural INT PRIMARY KEY AUTO_INCREMENT,
     Nome VARCHAR(30) NOT NULL,
     Cep INT NOT NULL,
     Endereco VARCHAR(100) NOT NULL,
@@ -41,6 +41,17 @@ CREATE TABLE Espaco (
     Estado VARCHAR(40) NOT NULL,
     Telefone VARCHAR(25) NOT NULL,
     Email VARCHAR(50) NOT NULL,
+    Ativo BOOLEAN DEFAULT TRUE,
+    INDEX idx_espaco_cultural_nome (Nome)
+);
+
+/* Para armazenar os espaços dentro de um espaço cultural */
+CREATE TABLE Espaco (
+    IdEspaco INT PRIMARY KEY AUTO_INCREMENT,
+    Nome VARCHAR(30) NOT NULL,
+    Ativo BOOLEAN DEFAULT TRUE,
+    IdEspacoCultural INT NOT NULL,
+    FOREIGN KEY (IdEspacoCultural) REFERENCES EspacoCultural(IdEspacoCultural) ON DELETE CASCADE,
     INDEX idx_espaco_nome (Nome)
 );
 
@@ -50,18 +61,23 @@ CREATE TABLE Evento (
     Nome VARCHAR(50) NOT NULL,
     Descricao TEXT NOT NULL,
     ImagemEvento TEXT NOT NULL,
-    Horario DATETIME NOT NULL,
+    HorarioInicial DATETIME NOT NULL,
+    HorarioFinal DATETIME NOT NULL,
     Valor DOUBLE,
     Publico INT,
+    PublicoTotal INT,
     Ativo BOOLEAN DEFAULT FALSE,
+    Liberado INT,
     IdUsuario INT,
     IdEspaco INT,
     FOREIGN KEY (IdUsuario) REFERENCES Usuario(IdUsuario) ON DELETE CASCADE,
     FOREIGN KEY (IdEspaco) REFERENCES Espaco(IdEspaco) ON DELETE CASCADE,
     INDEX idx_evento_ativo (Ativo),
-    INDEX idx_evento_horario (Horario),
+    INDEX idx_evento_horario_inicial (HorarioInicial),
+    INDEX idx_evento_horario_final (HorarioFinal),
     INDEX idx_evento_usuario (IdUsuario),
-    INDEX idx_evento_espaco (IdEspaco)
+    INDEX idx_evento_espaco (IdEspaco),
+    INDEX idx_evento_liberado (Liberado)
 );
 
 /* Para categorias que podem ter no evento */
@@ -125,56 +141,67 @@ CREATE TABLE ReacaoUsuario (
     INDEX idx_reacao_usuario_evento (IdUsuario, IdEvento)
 );
 
-/*Perfil*/
-INSERT INTO Perfil (PerfilUsuario) VALUES ('ADMINISTRADOR');
-INSERT INTO Perfil (PerfilUsuario) VALUES ('USUARIO');
+/* Inserir dados fictícios na tabela Perfil */
+INSERT INTO Perfil (PerfilUsuario) VALUES 
+('ADMINISTRADOR'), 
+('USUARIO');
 
-/*Usuario*/
-INSERT INTO Usuario (Nome, Email, Senha, Ativo, IdPerfil) VALUES ('Administrador', 'admin@example.com', 'senha_admin', TRUE, 1);
-INSERT INTO Usuario (Nome, Email, Senha, Ativo, IdPerfil) VALUES ('Usuário 1', 'usuario1@example.com', 'senha_usuario1', TRUE, 2);
-INSERT INTO Usuario (Nome, Email, Senha, Ativo, IdPerfil) VALUES ('Usuário 2', 'usuario2@example.com', 'senha_usuario2', TRUE, 2);
+/* Inserir dados fictícios na tabela Usuario */
+INSERT INTO Usuario (Nome, Email, Senha, Ativo, IdPerfil) VALUES 
+('Admin User', 'admin@example.com', 'password123', TRUE, 1),
+('Regular User', 'user@example.com', 'password123', TRUE, 2);
 
-/*Categoria*/
-INSERT INTO Categoria (Nome, Cor) VALUES ('Música', '#FF0000');
-INSERT INTO Categoria (Nome, Cor) VALUES ('Teatro', '#00FF00');
-INSERT INTO Categoria (Nome, Cor) VALUES ('Dança', '#0000FF');
+/* Inserir dados fictícios na tabela Categoria */
+INSERT INTO Categoria (Nome, Ativo, Cor) VALUES 
+('Música', TRUE, '#FF0000'), 
+('Teatro', TRUE, '#00FF00'), 
+('Dança', TRUE, '#0000FF');
 
-/*Espaco*/
-INSERT INTO Espaco (Nome, Cep, Endereco, Numero, Complemento, Cidade, Estado, Telefone, Email) 
-VALUES 
-('Espaço Cultural 1', 12345678, 'Rua A', '100', 'Sala 1', 'Cidade A', 'Estado A', '1234-5678', 'contato1@espaco.com'),
-('Espaço Cultural 2', 87654321, 'Avenida B', '200', NULL, 'Cidade B', 'Estado B', '8765-4321', 'contato2@espaco.com');
+/* Inserir dados fictícios na tabela EspacoCultural */
+INSERT INTO EspacoCultural (Nome, Cep, Endereco, Numero, Complemento, Cidade, Estado, Telefone, Email, Ativo) VALUES 
+('Espaço Cultural 1', 12345678, 'Rua A', '123', 'Apto 1', 'Cidade A', 'Estado A', '123456789', 'espacocultural1@example.com', TRUE),
+('Espaço Cultural 2', 87654321, 'Rua B', '456', 'Apto 2', 'Cidade B', 'Estado B', '987654321', 'espacocultural2@example.com', TRUE);
 
-/*Evento*/
-INSERT INTO Evento (Nome, Descricao, ImagemEvento, Horario, Valor, Publico, Ativo, IdUsuario, IdEspaco) 
-VALUES 
-('Evento 1', 'Descrição do Evento 1', 'imagem1.jpg', '2024-07-01 20:00:00', 50.0, 100, FALSE, 2, 1),
-('Evento 2', 'Descrição do Evento 2', 'imagem2.jpg', '2024-07-02 18:00:00', 30.0, 150, TRUE, 3, 2);
+/* Inserir dados fictícios na tabela Espaco */
+INSERT INTO Espaco (Nome, Ativo, IdEspacoCultural) VALUES 
+('Espaço 1-1', TRUE, 1), 
+('Espaço 1-2', TRUE, 1), 
+('Espaço 2-1', TRUE, 2);
 
-/*CategoriaEvento*/
-INSERT INTO CategoriaEvento (IdEvento, IdCategoria) VALUES (1, 1);
-INSERT INTO CategoriaEvento (IdEvento, IdCategoria) VALUES (1, 2);
-INSERT INTO CategoriaEvento (IdEvento, IdCategoria) VALUES (2, 3);
+/* Inserir dados fictícios na tabela Evento */
+INSERT INTO Evento (Nome, Descricao, ImagemEvento, HorarioInicial, HorarioFinal, Valor, Publico, PublicoTotal, Ativo, IdUsuario, IdEspaco) VALUES 
+('Evento 1', 'Descrição do Evento 1', 'imagem1.jpg', '2024-07-01 10:00:00', '2024-07-01 12:00:00', 100.0, 50, 100, TRUE, 1, 1),
+('Evento 2', 'Descrição do Evento 2', 'imagem2.jpg', '2024-07-02 14:00:00', '2024-07-02 16:00:00', 50.0, 25, 50, FALSE, 2, 2);
 
-/*Arquivo*/
-INSERT INTO Arquivo (Caminho, IdEvento) VALUES ('/caminho/para/arquivo1.pdf', 1);
-INSERT INTO Arquivo (Caminho, IdEvento) VALUES ('/caminho/para/arquivo2.pdf', 2);
+/* Inserir dados fictícios na tabela CategoriaEvento */
+INSERT INTO CategoriaEvento (IdEvento, IdCategoria) VALUES 
+(1, 1), 
+(1, 2), 
+(2, 3);
 
-/*Imagem*/
-INSERT INTO Imagem (Caminho, IdEvento) VALUES ('/caminho/para/imagem1.jpg', 1);
-INSERT INTO Imagem (Caminho, IdEvento) VALUES ('/caminho/para/imagem2.jpg', 2);
+/* Inserir dados fictícios na tabela Arquivo */
+INSERT INTO Arquivo (Caminho, IdEvento) VALUES 
+('caminho/arquivo1.pdf', 1), 
+('caminho/arquivo2.pdf', 2);
 
-/*Link*/
-INSERT INTO Link (Link, IdEvento) VALUES ('https://linkparaevento1.com', 1);
-INSERT INTO Link (Link, IdEvento) VALUES ('https://linkparaevento2.com', 2);
+/* Inserir dados fictícios na tabela Imagem */
+INSERT INTO Imagem (Caminho, IdEvento) VALUES 
+('caminho/imagem1.jpg', 1), 
+('caminho/imagem2.jpg', 2);
 
-/*Reacao*/
-INSERT INTO Reacao (Nome, Emoticon) VALUES ('Like', '👍');
-INSERT INTO Reacao (Nome, Emoticon) VALUES ('Love', '❤️');
-INSERT INTO Reacao (Nome, Emoticon) VALUES ('Happy', '😊');
+/* Inserir dados fictícios na tabela Link */
+INSERT INTO Link (Link, IdEvento) VALUES 
+('http://link1.com', 1), 
+('http://link2.com', 2);
 
-/*ReacaoUsuario*/
-INSERT INTO ReacaoUsuario (IdReacao, IdUsuario, IdEvento) VALUES (1, 2, 1);
-INSERT INTO ReacaoUsuario (IdReacao, IdUsuario, IdEvento) VALUES (2, 3, 2);
-INSERT INTO ReacaoUsuario (IdReacao, IdUsuario, IdEvento) VALUES (3, 2, 2);
+/* Inserir dados fictícios na tabela Reacao */
+INSERT INTO Reacao (Nome, Emoticon, Ativo) VALUES 
+('Gostei', '👍', TRUE), 
+('Amei', '❤️', TRUE), 
+('Haha', '😂', TRUE);
+
+/* Inserir dados fictícios na tabela ReacaoUsuario */
+INSERT INTO ReacaoUsuario (IdReacao, IdUsuario, IdEvento) VALUES 
+(1, 1, 1), 
+(2, 2, 2);
 

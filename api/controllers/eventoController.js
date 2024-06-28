@@ -45,6 +45,21 @@ class EventoController {
       .catch((error) => res.status(400).json(error.message));
   }
 
+  updateLiberar(req, res) {
+    const { id } = req.params;
+    const { Id } = req.body;
+    const retorno = eventoModel.updateLiberar(Id, id);
+    return retorno
+        .then((result) => {
+            if (result.affectedRows > 0) { 
+                res.status(200).send("Evento atualizado com sucesso!");
+            } else {
+                res.status(404).send("Evento não encontrado ou não foi possível atualizar.");
+            }
+        })
+        .catch((error) => res.status(400).json({ error: error.message }));
+}
+
   delete(req, res) {
     const { id } = req.params;
     const retorno = eventoModel.delete(id);

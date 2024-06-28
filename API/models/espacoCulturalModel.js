@@ -2,7 +2,7 @@
 const dbConnection = require("../db/dbConnection");
 
 
-class EspacoModel {
+class EspacoCulturalModel {
 
   
   executeSQL(sql, parametros = "") {
@@ -25,30 +25,30 @@ class EspacoModel {
 
 
   readList() {
-    const sql = "SELECT Espaco.IdEspaco, Espaco.Nome, Espaco.Ativo, Espaco.IdEspacoCultural, EspacoCultural.Nome AS NomeEspacoCultural FROM Espaco JOIN EspacoCultural ON Espaco.IdEspacoCultural = EspacoCultural.IdEspacoCultural";
+    const sql = "SELECT IdEspacoCultural, Nome, Cep, Endereco, Numero, Complemento, Cidade, Estado, Telefone, Email, Ativo FROM EspacoCultural";
     return this.executeSQL(sql); 
   }
 
   read(id) {
-    const sql = "SELECT Espaco.IdEspaco, Espaco.Nome, Espaco.Ativo, Espaco.IdEspacoCultural, EspacoCultural.Nome AS NomeEspacoCultural FROM Espaco JOIN EspacoCultural ON Espaco.IdEspacoCultural = EspacoCultural.IdEspacoCultural WHERE Espaco.IdEspaco = ?"; 
+    const sql = "SELECT IdEspacoCultural, Nome, Cep, Endereco, Numero, Complemento, Cidade, Estado, Telefone, Email, Ativo FROM EspacoCultural WHERE IdEspacoCultural = ?"; 
     return this.executeSQL(sql, id); 
   }
 
   create(novoEspaco) {
-    const sql = "INSERT INTO Espaco SET ?"; 
+    const sql = "INSERT INTO EspacoCultural SET ?"; 
     return this.executeSQL(sql, novoEspaco);
   }
 
   update(updateEspaco, id) {
-    const sql = "UPDATE Espaco SET ? WHERE IdEspaco = ?";
+    const sql = "UPDATE EspacoCultural SET ? WHERE IdEspacoCultural = ?";
     return this.executeSQL(sql, [updateEspaco, id]); 
   }
 
   delete(id) {
-    const sql = "DELETE FROM Espaco WHERE IdEspaco = ?"
+    const sql = "DELETE FROM EspacoCultural WHERE IdEspacoCultural = ?"
     return this.executeSQL(sql, id); 
   }
 
 }
 
-module.exports = new EspacoModel();
+module.exports = new EspacoCulturalModel();
