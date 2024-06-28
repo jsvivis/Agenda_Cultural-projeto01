@@ -13,8 +13,9 @@ function UserSearch() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await axios.get(`http://localhost:3000/usuarios?search=${searchTerm}`);
-      setUsers(response.data);
+      const response = await axios.get(`http://localhost:3000/usuario/${searchTerm}`);
+      console.log(response)
+      setUsers(response.data);;
       setError(null);
     } catch (error) {
       console.error(error);
@@ -52,9 +53,9 @@ function UserSearch() {
           <tbody>
             {users.map((user) => (
               <tr key={user.id}>
-                <td>{user.nome}</td>
-                <td>{user.email}</td>
-                <td>{user.senha}</td>
+                <td>{user.Nome}</td>
+                <td>{user.Email}</td>
+                <td>{user.Senha}</td>
               </tr>
             ))}
           </tbody>
