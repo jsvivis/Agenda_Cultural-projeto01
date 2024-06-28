@@ -1,9 +1,11 @@
 // BIBLIOTECAS
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 // IMPORTAÇÕES
 import Navbar from './components/navbar';
-import FormUsuario from './components/formUsuario';
+import CreateUser from './components/createUser';
+import UserSearch from './components/userSearch';
+import Home from './components/home';
 
 
 function App() {
@@ -14,9 +16,15 @@ function App() {
       <Navbar/>
      </div>
 
+     {/* <div>
+      <Home/>
+     </div> */}
+
      <BrowserRouter>
      <Routes>
-      <Route exact path='/usuario' element={<FormUsuario/>}/>
+      <Route exact path='/' element={<Home/>}/>
+      <Route path='/usuario' element={<CreateUser/>}/>
+      <Route path='/busca' element={<UserSearch/>}/>
      </Routes>
      </BrowserRouter>
     </>
