@@ -23,14 +23,23 @@ class ReacaoModel {
     return this.executeSQL(sql, id); 
   }
 
-  create(novoLink) {
-    const sql = "INSERT INTO Reacao SET ?"; 
-    return this.executeSQL(sql, novoLink);
+  search(parametro) {
+    const sql = `
+      SELECT IdReacao, Nome, Emoticon, Ativo
+      FROM Reacao
+      WHERE IdReacao = ? OR Nome LIKE ?`;
+    const values = [parametro, `%${parametro}%`];
+    return this.executeSQL(sql, values);
   }
 
-  update(updateLink, id) {
+  create(novaReacao) {
+    const sql = "INSERT INTO Reacao SET ?"; 
+    return this.executeSQL(sql, novaReacao);
+  }
+
+  update(updateReacao, id) {
     const sql = "UPDATE Reacao SET ? WHERE IdReacao = ?";
-    return this.executeSQL(sql, [updateLink, id]); 
+    return this.executeSQL(sql, [updateReacao, id]); 
   }
 
   delete(id) {

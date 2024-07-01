@@ -3,7 +3,13 @@ const exportModel = require("../models/exportModel");
 
 
 class ExportController {
- 
+  
+  todasTabelas(req, res) {
+      exportModel.exportAll()
+        .then(() => res.status(200).send("Dados exportados com sucesso!"))
+        .catch((error) => res.status(400).json(error.message));
+  }
+  
   usuario(req, res) {
     const retorno = exportModel.exportToExcelUsuarios();
     return retorno

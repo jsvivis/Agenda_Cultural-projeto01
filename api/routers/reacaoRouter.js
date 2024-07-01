@@ -8,6 +8,8 @@ router.get("/reacao", reacaoController.readList);
 
 router.get("/reacao/:id", reacaoController.read);
 
+router.get("/reacaosearch/:id", reacaoController.search);
+
 router.post("/reacao", reacaoController.create);
 
 router.put("/reacao/:id", reacaoController.update);

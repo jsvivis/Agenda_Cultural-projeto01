@@ -16,7 +16,7 @@ const fs = require('fs');
 const XLSX = require('xlsx');
 
 class ExportModel {
-
+  
   executeSQL(sql, parametros = "") {
     
     return new Promise( function (resolve, reject) {
@@ -33,6 +33,47 @@ class ExportModel {
 
       }
     );
+  }
+
+  async exportAll() {
+    try {
+      const wb = XLSX.utils.book_new();
+  
+      // Lista de modelos e nomes das planilhas
+      const modelos = [
+        { model: usuarioModel, sheetName: 'Usuarios' },
+        { model: perfilModel, sheetName: 'Perfis' },
+        { model: categoriaModel, sheetName: 'Categorias' },
+        { model: espacoModel, sheetName: 'Espacos' },
+        { model: eventoModel, sheetName: 'Eventos' },
+        { model: espacoCulturalModel, sheetName: 'EspacosCultural' },
+        { model: categoriaEventoModel, sheetName: 'CategoriaEvento' },
+        { model: arquivoModel, sheetName: 'Arquivos' },
+        { model: imagemModel, sheetName: 'Imagens' },
+        { model: linkModel, sheetName: 'Links' },
+        { model: reacaoModel, sheetName: 'Reacoes' },
+        { model: reacaoUsuarioModel, sheetName: 'ReacaoUsuarios' }
+      ];
+  
+      // Função auxiliar para lidar com a resposta do readList
+      const getRows = async (model) => {
+        const result = await model.readList();
+        return Array.isArray(result) ? result : [];
+      };
+  
+      // Loop sobre os modelos e adicionar as planilhas
+      for (const { model, sheetName } of modelos) {
+        const rows = await getRows(model);
+        const ws = XLSX.utils.json_to_sheet(rows);
+        XLSX.utils.book_append_sheet(wb, ws, sheetName);
+      }
+  
+      const fileName = `Exportacao_Completa.xlsx`;
+      XLSX.writeFile(wb, fileName);
+      console.log(`Dados exportados para ${fileName}`);
+    } catch (err) {
+      console.error(`Erro ao executar consulta SQL:`, err);
+    }
   }
 
   async exportToExcelUsuarios() {

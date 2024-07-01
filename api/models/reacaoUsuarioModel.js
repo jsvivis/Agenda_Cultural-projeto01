@@ -24,7 +24,8 @@ class ReacaoUsuarioModel {
   }
 
 
-  readList() { `SELECT 
+  readList() { 
+    const sql =`SELECT 
         ReacaoUsuario.IdReacaoUsuario, ReacaoUsuario.IdReacao, ReacaoUsuario.IdUsuario, ReacaoUsuario.IdEvento, Usuario.Nome AS NomeUsuario, Evento.Nome AS NomeEvento, Reacao.Nome AS NomeReacao, Reacao.Emoticon 
     FROM  
         ReacaoUsuario 

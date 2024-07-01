@@ -34,6 +34,15 @@ class EspacoCulturalModel {
     return this.executeSQL(sql, id); 
   }
 
+  search(parametro) {
+    const sql = `
+      SELECT IdEspacoCultural, Nome, Cep, Endereco, Numero, Complemento, Cidade, Estado, Telefone, Email, Ativo
+      FROM EspacoCultural
+      WHERE IdEspacoCultural = ? OR Nome LIKE ? OR Email LIKE ?`;
+    const values = [parametro, `%${parametro}%`, `%${parametro}%`];
+    return this.executeSQL(sql, values);
+  }
+
   create(novoEspaco) {
     const sql = "INSERT INTO EspacoCultural SET ?"; 
     return this.executeSQL(sql, novoEspaco);

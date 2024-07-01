@@ -8,6 +8,8 @@ router.get("/categoria", categoriaController.readList);
 
 router.get("/categoria/:id", categoriaController.read);
 
+router.get("/categoriasearch/:id", categoriaController.search);
+
 router.post("/categoria", categoriaController.create);
 
 router.put("/categoria/:id", categoriaController.update);

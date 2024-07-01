@@ -34,6 +34,16 @@ class EspacoModel {
     return this.executeSQL(sql, id); 
   }
 
+  search(parametro) {
+    const sql = `
+      SELECT Espaco.IdEspaco, Espaco.Nome, Espaco.Ativo, Espaco.IdEspacoCultural, EspacoCultural.Nome AS NomeEspacoCultural
+      FROM Espaco
+      JOIN EspacoCultural ON Espaco.IdEspacoCultural = EspacoCultural.IdEspacoCultural
+      WHERE Espaco.IdEspaco = ? OR Espaco.Nome LIKE ? OR EspacoCultural.Nome LIKE ?`;
+    const values = [parametro, `%${parametro}%`, `%${parametro}%`];
+    return this.executeSQL(sql, values);
+  }
+
   create(novoEspaco) {
     const sql = "INSERT INTO Espaco SET ?"; 
     return this.executeSQL(sql, novoEspaco);

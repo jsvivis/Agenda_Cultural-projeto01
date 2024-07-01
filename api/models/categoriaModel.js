@@ -23,6 +23,15 @@ class CategoriaModel {
     return this.executeSQL(sql, id); 
   }
 
+  search(parametro) {
+    const sql = `
+      SELECT IdCategoria, Nome, Ativo, Cor
+      FROM Categoria
+      WHERE IdCategoria = ? OR Nome LIKE ?`;
+    const values = [parametro, `%${parametro}%`];
+    return this.executeSQL(sql, values);
+  }
+
   create(novoEvento) {
     const sql = "INSERT INTO Categoria SET ?"; 
     return this.executeSQL(sql, novoEvento);

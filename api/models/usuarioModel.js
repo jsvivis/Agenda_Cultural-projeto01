@@ -33,6 +33,16 @@ class UsuarioModel {
     return this.executeSQL(sql, id); 
   }
 
+  search(parametro) {
+    const sql = `
+      SELECT Usuario.IdUsuario, Usuario.Nome, Usuario.Email, Usuario.Ativo, Usuario.IdPerfil, Perfil.PerfilUsuario 
+      FROM Usuario 
+      JOIN Perfil ON Usuario.IdPerfil = Perfil.IdPerfil 
+      WHERE Usuario.IdUsuario = ? OR Usuario.Nome LIKE ? OR Usuario.Email LIKE ?`;
+    const values = [parametro, `%${parametro}%`, `%${parametro}%`];
+    return this.executeSQL(sql, values);
+  }
+
   create(novoUsuario) {
     const sql = "INSERT INTO Usuario SET ?"; 
     return this.executeSQL(sql, novoUsuario);

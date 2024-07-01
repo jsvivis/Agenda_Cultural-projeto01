@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const exportController = require('../controllers/exportController');
 
+router.get('/export/todastabelas', exportController.todasTabelas);
 router.get('/export/usuario', exportController.usuario);
 router.get('/export/perfil', exportController.perfil);
 router.get('/export/categoria', exportController.categoria);

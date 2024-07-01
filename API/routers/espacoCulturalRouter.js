@@ -8,6 +8,8 @@ router.get("/espacocultural", espacoController.readList);
 
 router.get("/espacocultural/:id", espacoController.read);
 
+router.get("/espacoculturalsearch/:id", espacoController.search);
+
 router.post("/espacocultural", espacoController.create);
 
 router.put("/espacocultural/:id", espacoController.update);
