@@ -2,11 +2,9 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
-import WindowIcon from '@mui/icons-material/Window';
 
 // FRAMEWORKS - MATERIAL UI
 import {
-  Avatar,
   Box,
   Button,
   Container,
@@ -25,7 +23,8 @@ const theme = createTheme();
 
 function CreateEspaco() {
   const navigate = useNavigate();
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] 
+  = useState({
     Nome: "",
     IdEspacoCultural: "",
   });
@@ -91,9 +90,6 @@ function CreateEspaco() {
             alignItems: "center",
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: 'success.main' }}>
-            <WindowIcon />
-          </Avatar>
           <Typography component="h1" variant="h5">
             Criar Espaço
           </Typography>
@@ -117,6 +113,7 @@ function CreateEspaco() {
                 labelId="IdEspacoCultural-label"
                 id="IdEspacoCultural"
                 name="IdEspacoCultural"
+                label="Espaço Cultural"
                 value={formData.IdEspacoCultural}
                 onChange={handleChange}
                 required
@@ -134,31 +131,17 @@ function CreateEspaco() {
                 ))}
               </Select>
             </FormControl>
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                gap: 2,
-                mt: 3,
-                mb: 2
-              }}
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
             >
-              <Button
-                type="submit"
-                variant="contained"
-                sx={{ width: 150 }}
-              >
-                Cadastrar
-              </Button>
-              <Button
-                variant="contained"
-                sx={{ width: 150 }}
-                onClick={handleVoltar}
-              >
-                Voltar
-              </Button>
-            </Box>
+              Cadastrar
+            </Button>
+            <Button fullWidth variant="contained" onClick={handleVoltar}>
+              Voltar
+            </Button>
           </Box>
           {successMessage && (
             <Alert severity="success" sx={{ mt: 2 }}>

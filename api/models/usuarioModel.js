@@ -33,6 +33,11 @@ class UsuarioModel {
     return this.executeSQL(sql, id); 
   }
 
+  findByEmail(email){
+    const sql = "SELECT IdUsuario, Nome, Email, Ativo, IdPerfil, Senha FROM  Usuario  WHERE Email = ?"; 
+    return this.executeSQL(sql, email); 
+  }
+
   search(parametro) {
     const sql = `
       SELECT Usuario.IdUsuario, Usuario.Nome, Usuario.Email, Usuario.Ativo, Usuario.IdPerfil, Perfil.PerfilUsuario 

@@ -16,9 +16,12 @@ import {
   TextField,
   Typography,
   Alert,
-  TextareaAutosize,
+  Select,
+  MenuItem,
+  InputLabel
 } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { format } from 'date-fns'; // Importe o método format do date-fns ou outra biblioteca de formatação de data
 
 const theme = createTheme();
 
@@ -35,8 +38,11 @@ function UpdateEvento() {
     Publico: "",
     PublicoTotal: "",
     Ativo: false,
+    IdEspacoCultural: "",
+    IdEspaco: ""
   });
   const [espacosCulturais, setEspacosCulturais] = useState([]);
+  const [espacos, setEspacos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [successMessage, setSuccessMessage] = useState("");
@@ -56,6 +62,8 @@ function UpdateEvento() {
           Publico: eventoData.Publico,
           PublicoTotal: eventoData.PublicoTotal,
           Ativo: eventoData.Ativo,
+          IdEspacoCultural: eventoData.IdEspacoCultural,
+          IdEspaco: eventoData.IdEspaco
         });
         setError(null);
       } catch (error) {
@@ -67,9 +75,7 @@ function UpdateEvento() {
 
     const fetchEspacosCulturais = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:3000/espacocultural"
-        );
+        const response = await axios.get("http://localhost:3000/espacocultural");
         setEspacosCulturais(response.data);
       } catch (error) {
         console.error("Erro ao carregar espaços culturais:", error);
@@ -80,9 +86,28 @@ function UpdateEvento() {
     fetchEspacosCulturais();
   }, [id]);
 
+  useEffect(() => {
+    if (evento.IdEspacoCultural) {
+      const fetchEspacos = async () => {
+        try {
+          const response = await axios.get(`http://localhost:3000/espaco/${evento.IdEspacoCultural}`);
+          setEspacos(response.data);
+        } catch (error) {
+          console.error("Erro ao carregar espaços:", error);
+        }
+      };
+
+      fetchEspacos();
+    }
+  }, [evento.IdEspacoCultural]);
+
   const handleChange = (event) => {
     const { name, value, type, checked } = event.target;
     setEvento({ ...evento, [name]: type === "checkbox" ? checked : value });
+
+    if (name === "IdEspacoCultural") {
+      setEvento({ ...evento, IdEspaco: "" }); // Resetar o campo de Espaço ao mudar o Espaço Cultural
+    }
   };
 
   const handleSubmit = async (event) => {
@@ -98,6 +123,7 @@ function UpdateEvento() {
         Publico: evento.Publico,
         PublicoTotal: evento.PublicoTotal,
         Ativo: evento.Ativo,
+        IdEspaco: evento.IdEspaco
       });
       setError(null);
       setSuccessMessage("Evento atualizado com sucesso!");
@@ -171,7 +197,7 @@ function UpdateEvento() {
               InputLabelProps={{
                 shrink: true,
               }}
-              value={evento.HorarioInicial}
+              value={formatDateForInput(evento.HorarioInicial)}
               onChange={handleChange}
               sx={{ mb: 2 }}
             />
@@ -185,7 +211,7 @@ function UpdateEvento() {
               InputLabelProps={{
                 shrink: true,
               }}
-              value={evento.HorarioFinal}
+              value={formatDateForInput(evento.HorarioFinal)}
               onChange={handleChange}
               sx={{ mb: 2 }}
             />
@@ -226,16 +252,52 @@ function UpdateEvento() {
               sx={{ mb: 2 }}
             />
             <FormControl fullWidth sx={{ mb: 2 }}>
-              <TextareaAutosize
+              <TextField
                 id="Descricao"
                 name="Descricao"
-                aria-label="Descrição"
+                label="Descrição"
+                multiline
                 minRows={3}
                 placeholder="Descrição do evento"
                 value={evento.Descricao}
                 onChange={handleChange}
-                style={{ width: "100%", resize: "vertical", padding: "10px" }}
+                fullWidth
+                variant="outlined"
               />
+            </FormControl>
+            <FormControl fullWidth margin="normal">
+            <InputLabel id="espacoCultural-label">Espaço Cultural</InputLabel>
+              <Select
+                labelId="espacoCultural-label"
+                id="IdEspacoCultural"
+                name="IdEspacoCultural"
+                value={evento.IdEspacoCultural}
+                onChange={handleChange}
+                label="Espaço Cultural"
+              >
+                {espacosCulturais.map((espacoCultural) => (
+                  <MenuItem key={espacoCultural.IdEspacoCultural} value={espacoCultural.IdEspacoCultural}>
+                    {espacoCultural.Nome}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            <FormControl fullWidth margin="normal">
+            <InputLabel id="espaco-label">Espaço</InputLabel>
+              <Select
+                labelId="espaco-label"
+                id="IdEspaco"
+                name="IdEspaco"
+                value={evento.IdEspaco}
+                onChange={handleChange}
+                label="Espaço"
+              >
+                {espacos.map((espaco) => (
+                  <MenuItem key={espaco.IdEspaco} value={espaco.IdEspaco}>
+                    {espaco.Nome}
+                  </MenuItem>
+                ))}
+              </Select>
             </FormControl>
             <FormControl component="fieldset" sx={{ mt: 2 }}>
               <FormLabel component="legend">Ativo</FormLabel>
@@ -292,5 +354,17 @@ function UpdateEvento() {
     </ThemeProvider>
   );
 }
+
+// Função auxiliar para formatar a data no formato aceito pelo datetime-local input
+const formatDateForInput = (dateTimeString) => {
+  if (!dateTimeString) return '';
+  const date = new Date(dateTimeString);
+  const year = date.getFullYear();
+  const month = `0${date.getMonth() + 1}`.slice(-2); // Month is zero indexed
+  const day = `0${date.getDate()}`.slice(-2);
+  const hours = `0${date.getHours()}`.slice(-2);
+  const minutes = `0${date.getMinutes()}`.slice(-2);
+  return `${year}-${month}-${day}T${hours}:${minutes}`;
+};
 
 export default UpdateEvento;

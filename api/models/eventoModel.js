@@ -30,10 +30,12 @@ class EventoModel {
         SELECT 
             Evento.IdEvento, Evento.Nome, Evento.Descricao, Evento.ImagemEvento, Evento.HorarioInicial, Evento.HorarioFinal, Evento.Valor,    
             Evento.Publico, Evento.PublicoTotal, Evento.Ativo, Evento.IdUsuario, Evento.IdEspaco, UsuarioCriador.Nome AS NomeUsuario,
-            Espaco.Nome AS NomeEspaco, Evento.Liberado, UsuarioLiberacao.Nome AS NomeUsuarioLiberacao
+            Espaco.Nome AS NomeEspaco, Espaco.IdEspacoCultural, EspacoCultural.Nome AS NomeEspacoCultural, Evento.Liberado, 
+            UsuarioLiberacao.Nome AS NomeUsuarioLiberacao
         FROM Evento 
         JOIN Usuario AS UsuarioCriador ON Evento.IdUsuario = UsuarioCriador.IdUsuario 
         JOIN Espaco ON Evento.IdEspaco = Espaco.IdEspaco 
+        JOIN EspacoCultural ON Espaco.IdEspacoCultural = EspacoCultural.IdEspacoCultural
         LEFT JOIN Usuario AS UsuarioLiberacao ON Evento.Liberado = UsuarioLiberacao.IdUsuario 
         WHERE Evento.IdEvento = ?`;
     return this.executeSQL(sql, id); 

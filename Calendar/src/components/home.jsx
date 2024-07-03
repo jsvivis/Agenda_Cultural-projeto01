@@ -1,5 +1,8 @@
+// BIBLIOTECAS
 import React from "react";
 import { Link as RouterLink } from "react-router-dom";
+
+// FRAMEWORKS - MATERIAL UI
 import {
   Box,
   Container,
@@ -25,7 +28,7 @@ export default function Home() {
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
-            justifyContent: "center"
+            justifyContent: "center",
           }}
         >
           <Typography component="h1" variant="h4" gutterBottom>

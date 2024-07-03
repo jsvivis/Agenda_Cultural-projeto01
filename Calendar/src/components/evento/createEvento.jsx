@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import {
@@ -9,6 +9,10 @@ import {
   TextField,
   Typography,
   Avatar,
+  MenuItem,
+  Select,
+  FormControl,
+  InputLabel,
 } from "@mui/material";
 import FestivalIcon from '@mui/icons-material/Festival';
 import { createTheme, ThemeProvider } from "@mui/material/styles";
@@ -26,21 +30,50 @@ function CreateEvento() {
     HorarioFinal: "",
     Valor: "",
     PublicoTotal: "",
+    IdEspacoCultural: "",
+    IdEspaco: ""
   });
 
+  const [espacosCulturais, setEspacosCulturais] = useState([]);
+  const [espacos, setEspacos] = useState([]);
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+
+  useEffect(() => {
+    const fetchEspacosCulturais = async () => {
+      try {
+        const response = await axios.get("http://localhost:3000/espacocultural");
+        setEspacosCulturais(response.data);
+      } catch (error) {
+        console.error("Erro ao buscar espaços culturais:", error);
+      }
+    };
+
+    fetchEspacosCulturais();
+  }, []);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormData({ ...formData, [name]: value });
+
+    if (name === "IdEspacoCultural") {
+      fetchEspacos(value);
+    }
+  };
+
+  const fetchEspacos = async (idEspacoCultural) => {
+    try {
+      const response = await axios.get(`http://localhost:3000/espaco/${idEspacoCultural}`);
+      setEspacos(response.data);
+    } catch (error) {
+      console.error("Erro ao buscar espaços:", error);
+    }
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
       const response = await axios.post("http://localhost:3000/evento", formData);
-      console.log(formData)
       console.log(response.data);
       setSuccessMessage("Evento criado com sucesso!");
       setErrorMessage("");
@@ -52,6 +85,8 @@ function CreateEvento() {
         HorarioFinal: "",
         Valor: "",
         PublicoTotal: "",
+        IdEspacoCultural: "",
+        IdEspaco: ""
       });
     } catch (error) {
       console.error(error);
@@ -164,9 +199,55 @@ function CreateEvento() {
               label="Descrição"
               name="Descricao"
               autoComplete="Descricao"
+              multiline
+              rows={4}
               value={formData.Descricao}
               onChange={handleChange}
             />
+            <FormControl fullWidth margin="normal">
+              <InputLabel id="espacoCultural-label">Espaço Cultural</InputLabel>
+              <Select
+                labelId="espacoCultural-label"
+                id="IdEspacoCultural"
+                name="IdEspacoCultural"
+                label="Espaço Cultural"
+                value={formData.IdEspacoCultural}
+                onChange={handleChange}
+              >
+                <MenuItem value="">
+                  <em>Selecione um espaço cultural</em>
+                </MenuItem>
+                {espacosCulturais.map((espaco) => (
+                  <MenuItem
+                    key={espaco.IdEspacoCultural}
+                    value={espaco.IdEspacoCultural}
+                  >
+                    {espaco.Nome}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            <FormControl fullWidth margin="normal">
+              <InputLabel id="espaco-label">Espaço</InputLabel>
+              <Select
+                labelId="espaco-label"
+                id="IdEspaco"
+                name="IdEspaco"
+                label="Espaço"
+                value={formData.IdEspaco}
+                onChange={handleChange}
+                disabled={!formData.IdEspacoCultural}
+              >
+                <MenuItem value="">
+                  <em>Selecione um espaço</em>
+                </MenuItem>
+                {espacos.map((espaco) => (
+                  <MenuItem key={espaco.IdEspaco} value={espaco.IdEspaco}>
+                    {espaco.Nome}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
             <Box sx={{ display: "flex", justifyContent: "center", mt: 3, mb: 2 }}>
               <Button type="submit" variant="contained" sx={{ width: 150 }}>
                 Cadastrar
