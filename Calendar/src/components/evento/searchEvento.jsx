@@ -135,19 +135,20 @@ function SearchEspaco() {
             >
               <Table sx={{ minWidth: 650 }} aria-label="simple table">
                 <TableHead>
-                  <TableRow>
-                    <TableCell>Id</TableCell>
-                    <TableCell>Nome</TableCell>
-                    <TableCell>Horário Inicial</TableCell>
-                    <TableCell>Horário Final</TableCell>
-                    <TableCell>Valor</TableCell>
-                    <TableCell>Publico</TableCell>
-                    <TableCell>Publico Total</TableCell>
-                    <TableCell>Usuário</TableCell>
-                    <TableCell>Espaço</TableCell>
-                    <TableCell>Liberado</TableCell>
-                    <TableCell>Ativo</TableCell>
-                    <TableCell>Ação</TableCell>
+                <TableRow>
+                    <TableCell align="center">Id</TableCell>
+                    <TableCell align="center">Nome</TableCell>
+                    <TableCell align="center">Horário Inicial</TableCell>
+                    <TableCell align="center">Horário Final</TableCell>
+                    <TableCell align="center">Valor</TableCell>
+                    <TableCell align="center">Público</TableCell>
+                    <TableCell align="center">Público Total</TableCell>
+                    <TableCell align="center">Usuário</TableCell>
+                    <TableCell align="center">Espaço</TableCell>
+                    <TableCell align="center">Categoria</TableCell>
+                    <TableCell align="center">Liberado</TableCell>
+                    <TableCell align="center">Ativo</TableCell>
+                    <TableCell align="center">Ação</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -162,19 +163,29 @@ function SearchEspaco() {
                       <TableCell>{user.PublicoTotal}</TableCell>
                       <TableCell>{user.NomeUsuario}</TableCell>
                       <TableCell>{user.NomeEspaco}</TableCell>
+                      <TableCell>{user.NomeCategoria}</TableCell>
                       <TableCell>{user.NomeUsuarioLiberacao}</TableCell>
                       <TableCell>
                         <Checkbox checked={user.Ativo} readOnly />
                       </TableCell>
                       <TableCell>
-                        <Button
-                          component={Link}
-                          to={`/atualizarevento/${user.IdEvento}`}
-                          variant="contained"
-                          color="warning"
-                        >
-                          Editar
-                        </Button>
+                      <Button
+                            component={Link}
+                            to={`/atualizarevento/${user.IdEvento}`}
+                            variant="contained"
+                            color="warning"
+                            sx={{ marginRight: 1 }}
+                          >
+                            Editar
+                          </Button>
+                          <Button
+                            component={Link}
+                            to={`/detailsevento/${user.IdEvento}`}
+                            variant="contained"
+                            color="warning"
+                          >
+                            Detalhes
+                          </Button>
                       </TableCell>
                     </TableRow>
                   ))}

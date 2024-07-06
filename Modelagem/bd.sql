@@ -60,35 +60,25 @@ CREATE TABLE Evento (
     IdEvento INT PRIMARY KEY AUTO_INCREMENT,
     Nome VARCHAR(50) NOT NULL,
     Descricao TEXT NOT NULL,
-    ImagemEvento TEXT NOT NULL,
     HorarioInicial DATETIME NOT NULL,
     HorarioFinal DATETIME NOT NULL,
     Valor DOUBLE,
     Publico INT,
     PublicoTotal INT,
     Ativo BOOLEAN DEFAULT FALSE,
-    Liberado INT,
+    Liberado BOOLEAN DEFAULT FALSE,
     IdUsuario INT,
-    IdEspaco INT,
+    IdEspaco INT NOT NULL,
+    IdCategoria INT NOT NULL,
     FOREIGN KEY (IdUsuario) REFERENCES Usuario(IdUsuario) ON DELETE CASCADE,
     FOREIGN KEY (IdEspaco) REFERENCES Espaco(IdEspaco) ON DELETE CASCADE,
+    FOREIGN KEY (IdCategoria) REFERENCES Categoria(IdCategoria) ON DELETE CASCADE,
     INDEX idx_evento_ativo (Ativo),
     INDEX idx_evento_horario_inicial (HorarioInicial),
     INDEX idx_evento_horario_final (HorarioFinal),
     INDEX idx_evento_usuario (IdUsuario),
     INDEX idx_evento_espaco (IdEspaco),
     INDEX idx_evento_liberado (Liberado)
-);
-
-/* Para categorias que podem ter no evento */
-CREATE TABLE CategoriaEvento (
-    IdCategoriaEvento INT PRIMARY KEY AUTO_INCREMENT,
-    IdEvento INT,
-    IdCategoria INT,
-    FOREIGN KEY (IdEvento) REFERENCES Evento(IdEvento) ON DELETE CASCADE,
-    FOREIGN KEY (IdCategoria) REFERENCES Categoria(IdCategoria) ON DELETE CASCADE,
-    INDEX idx_categoria_evento_evento (IdEvento),
-    INDEX idx_categoria_evento_categoria (IdCategoria)
 );
 
 /* Para arquivos do evento */
@@ -148,8 +138,8 @@ INSERT INTO Perfil (PerfilUsuario) VALUES
 
 /* Inserir dados fictícios na tabela Usuario */
 INSERT INTO Usuario (Nome, Email, Senha, Ativo, IdPerfil) VALUES 
-('Admin User', 'admin@example.com', 'password123', TRUE, 1),
-('Regular User', 'user@example.com', 'password123', TRUE, 2);
+('Admin User', 'admin@admin', '$10$VKD0vPKgj1.ZZt5GMnDnXOOgkjfz8jno.g8SuJUsSzXSNJCluZkyS', TRUE, 1),
+('Regular User', 'regular@user', '123', TRUE, 2);
 
 /* Inserir dados fictícios na tabela Categoria */
 INSERT INTO Categoria (Nome, Ativo, Cor) VALUES 
@@ -169,15 +159,9 @@ INSERT INTO Espaco (Nome, Ativo, IdEspacoCultural) VALUES
 ('Espaço 2-1', TRUE, 2);
 
 /* Inserir dados fictícios na tabela Evento */
-INSERT INTO Evento (Nome, Descricao, ImagemEvento, HorarioInicial, HorarioFinal, Valor, Publico, PublicoTotal, Ativo, IdUsuario, IdEspaco) VALUES 
-('Evento 1', 'Descrição do Evento 1', 'imagem1.jpg', '2024-07-01 10:00:00', '2024-07-01 12:00:00', 100.0, 50, 100, TRUE, 1, 1),
-('Evento 2', 'Descrição do Evento 2', 'imagem2.jpg', '2024-07-02 14:00:00', '2024-07-02 16:00:00', 50.0, 25, 50, FALSE, 2, 2);
-
-/* Inserir dados fictícios na tabela CategoriaEvento */
-INSERT INTO CategoriaEvento (IdEvento, IdCategoria) VALUES 
-(1, 1), 
-(1, 2), 
-(2, 3);
+INSERT INTO Evento (Nome, Descricao, HorarioInicial, HorarioFinal, Valor, Publico, PublicoTotal, Ativo, Liberado, IdUsuario, IdEspaco, IdCategoria) VALUES 
+('Evento 1', 'Descrição do Evento 1', '2024-07-01 10:00:00', '2024-07-01 12:00:00', 100.0, 50, 100, TRUE, TRUE, 1, 1, 1),
+('Evento 2', 'Descrição do Evento 2', '2024-07-02 14:00:00', '2024-07-02 16:00:00', 50.0, 25, 50, FALSE, FALSE, 2, 2, 2);
 
 /* Inserir dados fictícios na tabela Arquivo */
 INSERT INTO Arquivo (Caminho, IdEvento) VALUES 
@@ -196,12 +180,11 @@ INSERT INTO Link (Link, IdEvento) VALUES
 
 /* Inserir dados fictícios na tabela Reacao */
 INSERT INTO Reacao (Nome, Emoticon, Ativo) VALUES 
-('Gostei', '👍', TRUE), 
-('Amei', '❤️', TRUE), 
-('Haha', '😂', TRUE);
+('Gostei', '1F60D', TRUE), 
+('Amei', '1F60D', TRUE), 
+('Haha', '1F60D', TRUE);
 
 /* Inserir dados fictícios na tabela ReacaoUsuario */
 INSERT INTO ReacaoUsuario (IdReacao, IdUsuario, IdEvento) VALUES 
 (1, 1, 1), 
 (2, 2, 2);
-

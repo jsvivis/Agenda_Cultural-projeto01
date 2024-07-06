@@ -21,7 +21,6 @@ import {
   InputLabel
 } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { format } from 'date-fns'; // Importe o método format do date-fns ou outra biblioteca de formatação de data
 
 const theme = createTheme();
 
@@ -31,7 +30,6 @@ function UpdateEvento() {
   const [evento, setEvento] = useState({
     Nome: "",
     Descricao: "",
-    ImagemEvento: "",
     HorarioInicial: "",
     HorarioFinal: "",
     Valor: "",
@@ -39,23 +37,34 @@ function UpdateEvento() {
     PublicoTotal: "",
     Ativo: false,
     IdEspacoCultural: "",
-    IdEspaco: ""
+    IdEspaco: "",
+    IdCategoria: ""
   });
   const [espacosCulturais, setEspacosCulturais] = useState([]);
   const [espacos, setEspacos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [successMessage, setSuccessMessage] = useState("");
+  const [categorias, setCategorias] = useState([]);
+
+  // Função para buscar categorias
+  const fetchCategorias = async () => {
+    try {
+      const response = await axios.get("http://localhost:3000/categoria");
+      setCategorias(response.data);
+    } catch (error) {
+      console.error("Erro ao buscar categorias:", error);
+    }
+  };
 
   useEffect(() => {
     const fetchEvento = async () => {
       try {
         const response = await axios.get(`http://localhost:3000/evento/${id}`);
-        const eventoData = response.data[0]; // Acessa o primeiro objeto no array
+        const eventoData = response.data[0];
         setEvento({
           Nome: eventoData.Nome,
           Descricao: eventoData.Descricao,
-          ImagemEvento: eventoData.ImagemEvento,
           HorarioInicial: eventoData.HorarioInicial,
           HorarioFinal: eventoData.HorarioFinal,
           Valor: eventoData.Valor,
@@ -63,7 +72,8 @@ function UpdateEvento() {
           PublicoTotal: eventoData.PublicoTotal,
           Ativo: eventoData.Ativo,
           IdEspacoCultural: eventoData.IdEspacoCultural,
-          IdEspaco: eventoData.IdEspaco
+          IdEspaco: eventoData.IdEspaco,
+          IdCategoria: eventoData.IdCategoria,
         });
         setError(null);
       } catch (error) {
@@ -82,6 +92,7 @@ function UpdateEvento() {
       }
     };
 
+    fetchCategorias();
     fetchEvento();
     fetchEspacosCulturais();
   }, [id]);
@@ -106,24 +117,25 @@ function UpdateEvento() {
     setEvento({ ...evento, [name]: type === "checkbox" ? checked : value });
 
     if (name === "IdEspacoCultural") {
-      setEvento({ ...evento, IdEspaco: "" }); // Resetar o campo de Espaço ao mudar o Espaço Cultural
+      setEvento({ ...evento, IdEspaco: "" });
     }
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
+
       await axios.put(`http://localhost:3000/evento/${id}`, {
         Nome: evento.Nome,
         Descricao: evento.Descricao,
-        ImagemEvento: evento.ImagemEvento,
         HorarioInicial: evento.HorarioInicial,
         HorarioFinal: evento.HorarioFinal,
         Valor: evento.Valor,
         Publico: evento.Publico,
         PublicoTotal: evento.PublicoTotal,
         Ativo: evento.Ativo,
-        IdEspaco: evento.IdEspaco
+        IdEspaco: evento.IdEspaco,
+        IdCategoria: evento.IdCategoria
       });
       setError(null);
       setSuccessMessage("Evento atualizado com sucesso!");
@@ -133,7 +145,7 @@ function UpdateEvento() {
   };
 
   const handleVoltar = () => {
-    navigate("/buscarevento"); // Navegar de volta para a página
+    navigate("/buscarevento");
   };
 
   if (loading) {
@@ -173,17 +185,6 @@ function UpdateEvento() {
               name="Nome"
               autoComplete="off"
               value={evento.Nome}
-              onChange={handleChange}
-              sx={{ mb: 2 }}
-            />
-            <TextField
-              margin="normal"
-              fullWidth
-              id="ImagemEvento"
-              label="Imagem do Evento"
-              name="ImagemEvento"
-              autoComplete="off"
-              value={evento.ImagemEvento}
               onChange={handleChange}
               sx={{ mb: 2 }}
             />
@@ -266,7 +267,7 @@ function UpdateEvento() {
               />
             </FormControl>
             <FormControl fullWidth margin="normal">
-            <InputLabel id="espacoCultural-label">Espaço Cultural</InputLabel>
+              <InputLabel id="espacoCultural-label">Espaço Cultural</InputLabel>
               <Select
                 labelId="espacoCultural-label"
                 id="IdEspacoCultural"
@@ -283,7 +284,7 @@ function UpdateEvento() {
               </Select>
             </FormControl>
             <FormControl fullWidth margin="normal">
-            <InputLabel id="espaco-label">Espaço</InputLabel>
+              <InputLabel id="espaco-label">Espaço</InputLabel>
               <Select
                 labelId="espaco-label"
                 id="IdEspaco"
@@ -298,6 +299,42 @@ function UpdateEvento() {
                   </MenuItem>
                 ))}
               </Select>
+            </FormControl>
+            <FormControl fullWidth margin="normal">
+              <InputLabel id="categoria-label">Categoria</InputLabel>
+              <Select
+                    labelId="categoria-label"
+                    id="IdCategoria"
+                    name="IdCategoria"
+                    label="Categoria"
+                    value={evento.IdCategoria} // Garante que o MenuItem correto seja selecionado
+                    onChange={handleChange}
+                  >
+                    <MenuItem value="">
+                      <em>Selecione uma categoria</em>
+                    </MenuItem>
+                    {categorias.map((categoria) => (
+                      <MenuItem key={categoria.IdCategoria} value={categoria.IdCategoria}>
+                        <Box
+                          sx={{
+                            display: "flex",
+                            alignItems: "center",
+                          }}
+                        >
+                          <Box
+                            sx={{
+                              backgroundColor: categoria.Cor,
+                              width: 20,
+                              height: 20,
+                              borderRadius: "50%",
+                              marginRight: 1,
+                            }}
+                          />
+                          {categoria.Nome}
+                        </Box>
+                      </MenuItem>
+                    ))}
+                  </Select>
             </FormControl>
             <FormControl component="fieldset" sx={{ mt: 2 }}>
               <FormLabel component="legend">Ativo</FormLabel>
@@ -355,7 +392,6 @@ function UpdateEvento() {
   );
 }
 
-// Função auxiliar para formatar a data no formato aceito pelo datetime-local input
 const formatDateForInput = (dateTimeString) => {
   if (!dateTimeString) return '';
   const date = new Date(dateTimeString);

@@ -24,8 +24,8 @@ class ArquivoModel {
   }
 
   create(novoArquivo) {
-    const sql = "INSERT INTO Arquivo SET ?"; 
-    return this.executeSQL(sql, novoArquivo);
+    const sql = 'INSERT INTO Arquivo SET ?';
+    return db.query(sql, novoArquivo);
   }
 
   update(updateArquivo, id) {

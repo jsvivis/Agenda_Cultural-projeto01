@@ -1,44 +1,47 @@
-import React from "react";
-import { Link as RouterLink } from "react-router-dom";
-import { Box, Button, CssBaseline, Typography, Avatar } from "@mui/material";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+// BIBLIOTECAS
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+
+// FRAMEWORKS - MATERIAL UI
+import { Container, Grid, Box, Typography, Avatar, IconButton, CssBaseline, Button } from '@mui/material';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+
+const theme = createTheme();
+
+const useRedirect = (path) => {
+  const navigate = useNavigate();
+  return () => navigate(path);
+};
 
 export default function Navbar() {
+
+  const navigateToManager = useRedirect('/manager');
   return (
-    <Box
-      sx={{
-        backgroundColor: "#1976d2",
-        color: "white",
-        paddingTop: 1,
-        paddingBottom: 1,
-      }}
-    >
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          maxWidth: "1200px",
-          margin: "auto",
-          paddingLeft: 2,
-          paddingRight: 2,
-        }}
-      >
-        <Box>
-          <Button component={RouterLink} to="/" color="inherit">
-            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-              Home
-            </Typography>
-          </Button>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', 
+            width: '100%', height: '80px', backgroundColor: '#222222', m: 0, p: 0 }}>
+          <Typography variant="h4" component="h1" 
+          sx={{width: '27%', color: '#fff', display: 'flex', justifyContent: 'center'}}>
+            Agenda Instituto
+          </Typography>
+          <Box sx={{ width: '58%', display: 'flex', justifyContent: 'center'}}>
+            <Button sx={{ color: '#fff', fontSize: '1.2rem', fontWeight: '600', border: 'solid 2px #fff',
+                borderRadius: '5px', '&:hover': { border: 'solid 2px #fff', color: 'green' }
+                 }}
+                 onClick={navigateToManager}
+                 >
+                Gerenciador
+            </Button>
+          </Box>
+          <Box sx={{ width: '15%', display: 'flex', justifyContent: 'center'}}>
+          <Avatar>
+            <CalendarMonthIcon />
+          </Avatar>
+          </Box>
         </Box>
-        <Box>
-          <Button color="inherit">
-            <Avatar sx={{ bgcolor: "transparent" }}>
-              <AccountCircleIcon />
-            </Avatar>
-          </Button>
-        </Box>
-      </Box>
-    </Box>
+    </ThemeProvider>
   );
 }
+

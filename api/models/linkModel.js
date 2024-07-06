@@ -18,6 +18,11 @@ class LinkModel {
     return this.executeSQL(sql); 
   }
 
+  readListId(id) {
+    const sql = "SELECT IdLink, Link, IdEvento FROM Link WHERE IdEvento = ?";
+    return this.executeSQL(sql, id); 
+  }
+
   read(id) {
     const sql = "SELECT IdLink, Link, IdEvento FROM Link WHERE IdLink = ?"; 
     return this.executeSQL(sql, id); 

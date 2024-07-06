@@ -12,6 +12,18 @@ class LinkController {
       .catch((error) => res.status(400).json(error.message));
   }
 
+  readListId(req, res) {
+    const { id } = req.params;
+    const retorno = linkModel.readListId(id);
+    return retorno
+      .then((result) =>
+        result.length == 0 
+        ? res.status(404).send("Link não encontrado!") 
+        : res.status(200).json(result)
+      )
+      .catch((error) => res.status(400).json(error.message));
+  }
+
   read(req, res) {
     const { id } = req.params;
     const retorno = linkModel.read(id);

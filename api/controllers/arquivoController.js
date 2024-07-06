@@ -25,13 +25,18 @@ class ArquivoController {
   }
 
   create(req, res) {
-    const reqBody = req.body; 
-    const retorno = arquivoModel.create(reqBody);
-    return retorno
-      .then((result) =>
-        res.status(201).send("Arquivo criado com sucesso!")
-      )
-      .catch((error) => res.status(400).json(error.message));
+    if (!req.file) {
+      return res.status(400).send('Nenhum arquivo enviado.');
+    }
+
+    const novoArquivo = {
+      nome: req.file.filename,
+      caminho: req.file.path // Caminho do arquivo no servidor
+    };
+
+    arquivoModel.create(novoArquivo)
+      .then(() => res.status(201).send('Arquivo criado com sucesso!'))
+      .catch((error) => res.status(400).json({ message: error.message }));
   }
 
   update(req, res) {

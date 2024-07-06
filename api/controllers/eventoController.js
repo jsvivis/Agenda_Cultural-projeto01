@@ -25,8 +25,19 @@ class EventoController {
   }
 
   create(req, res) {
-    const reqBody = req.body; 
-    const retorno = eventoModel.create(reqBody);
+   const { Descricao, HorarioInicial, HorarioFinal, IdEspaco, Nome, PublicoTotal, Valor, IdCategoria } = req.body;
+
+  const eventoData = {
+    Descricao,
+    HorarioInicial,
+    HorarioFinal,
+    IdEspaco,
+    Nome,
+    IdCategoria,
+    PublicoTotal: parseInt(PublicoTotal), // Convertendo para inteiro
+    Valor: parseFloat(Valor) // Convertendo para float
+  };
+    const retorno = eventoModel.create(eventoData);
     return retorno
       .then((result) =>
         res.status(201).send("Evento criado com sucesso!")

@@ -25,17 +25,18 @@ function CreateEvento() {
   const [formData, setFormData] = useState({
     Nome: "",
     Descricao: "",
-    ImagemEvento: "",
     HorarioInicial: "",
     HorarioFinal: "",
     Valor: "",
     PublicoTotal: "",
     IdEspacoCultural: "",
-    IdEspaco: ""
+    IdEspaco: "",
+    IdCategoria: "", // Novo campo para a categoria selecionada
   });
 
   const [espacosCulturais, setEspacosCulturais] = useState([]);
   const [espacos, setEspacos] = useState([]);
+  const [categorias, setCategorias] = useState([]); // Estado para armazenar categorias
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -49,7 +50,17 @@ function CreateEvento() {
       }
     };
 
+    const fetchCategorias = async () => {
+      try {
+        const response = await axios.get("http://localhost:3000/categoria");
+        setCategorias(response.data);
+      } catch (error) {
+        console.error("Erro ao buscar categorias:", error);
+      }
+    };
+
     fetchEspacosCulturais();
+    fetchCategorias();
   }, []);
 
   const handleChange = (event) => {
@@ -73,7 +84,10 @@ function CreateEvento() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
+      const { IdEspacoCultural, ...formDataToSend } = formData;
+      console.log(formData)
       const response = await axios.post("http://localhost:3000/evento", formData);
+      console.log(formData)
       console.log(response.data);
       setSuccessMessage("Evento criado com sucesso!");
       setErrorMessage("");
@@ -86,7 +100,8 @@ function CreateEvento() {
         Valor: "",
         PublicoTotal: "",
         IdEspacoCultural: "",
-        IdEspaco: ""
+        IdEspaco: "",
+        IdCategoria: "", // Limpar a categoria selecionada após o envio
       });
     } catch (error) {
       console.error(error);
@@ -128,17 +143,6 @@ function CreateEvento() {
               autoComplete="Nome"
               autoFocus
               value={formData.Nome}
-              onChange={handleChange}
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="ImagemEvento"
-              label="Imagem Evento"
-              name="ImagemEvento"
-              autoComplete="Imagem"
-              value={formData.ImagemEvento}
               onChange={handleChange}
             />
             <TextField
@@ -244,6 +248,42 @@ function CreateEvento() {
                 {espacos.map((espaco) => (
                   <MenuItem key={espaco.IdEspaco} value={espaco.IdEspaco}>
                     {espaco.Nome}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            <FormControl fullWidth margin="normal">
+              <InputLabel id="categoria-label">Categoria</InputLabel>
+              <Select
+                labelId="categoria-label"
+                id="IdCategoria"
+                name="IdCategoria"
+                label="Categoria"
+                value={formData.IdCategoria}
+                onChange={handleChange}
+              >
+                <MenuItem value="">
+                  <em>Selecione uma categoria</em>
+                </MenuItem>
+                {categorias.map((categoria) => (
+                  <MenuItem key={categoria.IdCategoria} value={categoria.IdCategoria}>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                      }}
+                    >
+                      <Box
+                        sx={{
+                          backgroundColor: categoria.Cor,
+                          width: 20,
+                          height: 20,
+                          borderRadius: "50%",
+                          marginRight: 1,
+                        }}
+                      />
+                      {categoria.Nome}
+                    </Box>
                   </MenuItem>
                 ))}
               </Select>
