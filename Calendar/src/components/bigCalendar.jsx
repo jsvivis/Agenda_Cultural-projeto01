@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Calendar, momentLocalizer } from 'react-big-calendar';
+import { Calendar as BigCalendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import {
   Container,
-  MenuItem,
   Box,
   CssBaseline,
   Dialog,
@@ -19,12 +18,13 @@ import {
   Button,
   DialogActions,
   Snackbar,
+  MenuItem,
 } from '@mui/material';
 import { Alert } from '@mui/material';
 
 const localizer = momentLocalizer(moment);
 
-const BigCalendar = () => {
+const BigCalendarComponent = ({ selectedDate }) => {
   const [events, setEvents] = useState([]);
   const [open, setOpen] = useState(false);
   const [currentEvent, setCurrentEvent] = useState(null);
@@ -167,7 +167,7 @@ const BigCalendar = () => {
       console.error('Erro ao buscar evento para edição:', error);
       // Se ocorrer erro, preencha o formulário com os dados do evento selecionado
       setFormData({
-        IdEvento: event.IdEvento, // Usando event.IdEvento conforme sugerido pelo servidor
+        IdEvento: event.id,
         Nome: event.title,
         Descricao: event.descricao,
         HorarioInicial: formatDateTimeForInput(event.start),
@@ -204,7 +204,7 @@ const BigCalendar = () => {
     try {
       let response;
       if (currentEvent) {
-        response = await axios.put(`http://localhost:3000/evento/${currentEvent.IdEvento}`, formData);
+        response = await axios.put(`http://localhost:3000/evento/${currentEvent.id}`, formData);
       } else {
         response = await axios.post('http://localhost:3000/evento', formData);
       }
@@ -212,206 +212,192 @@ const BigCalendar = () => {
       setSuccessMessage('Evento salvo com sucesso!');
       setErrorMessage('');
       const newEvent = {
-        id: formData.IdEvento,
-        title: formData.Nome,
-        start: formData.HorarioInicial,
-        end: formData.HorarioFinal,
-        descricao: formData.Descricao,
-        valor: formData.Valor,
-        publicoTotal: formData.PublicoTotal,
-        idEspacoCultural: formData.IdEspacoCultural,
-        idEspaco: formData.IdEspaco,
-        idCategoria: formData.IdCategoria,
-        categoriaCor: categorias.find(categoria => categoria.IdCategoria === formData.IdCategoria)?.CorCategoria || '',
+        id: response.data.IdEvento,
+        title: response.data.Nome,
+        start: new Date(response.data.HorarioInicial),
+        end: new Date(response.data.HorarioFinal),
+        descricao: response.data.Descricao,
+        valor: response.data.Valor,
+        publicoTotal: response.data.PublicoTotal,
+        idEspacoCultural: response.data.IdEspacoCultural,
+        idEspaco: response.data.IdEspaco,
+        idCategoria: response.data.IdCategoria,
+        categoriaCor: response.data.CategoriaCor,
       };
       if (currentEvent) {
-        const updatedEvents = events.map(event => event.id === currentEvent.id ? newEvent : event);
-        setEvents(updatedEvents);
+        setEvents(events.map(event => (event.id === currentEvent.id ? newEvent : event)));
       } else {
         setEvents([...events, newEvent]);
       }
+      handleClose();
     } catch (error) {
       console.error('Erro ao salvar evento:', error);
       setSuccessMessage('');
-      setErrorMessage('Erro ao salvar evento');
+      setErrorMessage('Erro ao salvar evento. Por favor, tente novamente.');
     }
-    handleClose();
-  };
-
-  const eventStyleGetter = (event) => {
-    const backgroundColor = event.categoriaCor || '#3174ad';
-    const style = {
-      backgroundColor,
-      opacity: 0.8,
-      color: 'white',
-      border: '0px',
-      display: 'block'
-    };
-    return { style };
   };
 
   return (
-    <Container component="main" maxWidth="lg" className={open ? 'blurredBackground' : ''}>
+    <Container maxWidth="false">
       <CssBaseline />
-      <Box sx={{ marginTop: 8, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        <Calendar
-          localizer={localizer}
-          events={events}
-          startAccessor="start"
-          endAccessor="end"
-          selectable
-          onSelectSlot={handleSelectSlot}
-          onSelectEvent={handleSelectEvent}
-          eventPropGetter={eventStyleGetter}
-          style={{ height: 500, width: '100%' }}
-        />
-        <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-          <DialogTitle id="form-dialog-title">{currentEvent ? 'Editar Evento' : 'Adicionar Evento'}</DialogTitle>
+      <Box sx={{ margin: 2 }}>
+      <BigCalendar
+        localizer={localizer}
+        events={events}
+        startAccessor="start"
+        endAccessor="end"
+        style={{ height: '100vh', width: '100%' }} // Exemplo utilizando unidades de viewport
+        selectable
+        onSelectSlot={handleSelectSlot}
+        onSelectEvent={handleSelectEvent}
+        defaultView="week"
+        views={['day', 'week', 'month']}
+        date={selectedDate}
+        onNavigate={() => {}}
+        eventPropGetter={(event) => ({
+          style: { backgroundColor: event.categoriaCor || '#3174ad' },
+        })}
+      />
+        <Dialog open={open} onClose={handleClose}>
+          <DialogTitle>{currentEvent ? 'Editar Evento' : 'Adicionar Evento'}</DialogTitle>
           <DialogContent>
             <DialogContentText>
-              Preencha os campos abaixo para {currentEvent ? 'editar' : 'adicionar'} um evento.
+              Preencha as informações do evento abaixo.
             </DialogContentText>
             <TextField
               autoFocus
               margin="dense"
-              id="nome"
+              id="Nome"
               name="Nome"
               label="Nome"
               type="text"
               fullWidth
-              required
               value={formData.Nome}
               onChange={handleChange}
             />
             <TextField
               margin="dense"
-              id="descricao"
+              id="Descricao"
               name="Descricao"
               label="Descrição"
               type="text"
               fullWidth
-              multiline
-              required
-              rows={4}
               value={formData.Descricao}
               onChange={handleChange}
             />
             <TextField
               margin="dense"
-              id="horarioInicial"
+              id="HorarioInicial"
               name="HorarioInicial"
               label="Horário Inicial"
               type="datetime-local"
               fullWidth
-              required
               value={formData.HorarioInicial}
               onChange={handleChange}
+              InputLabelProps={{
+                shrink: true,
+              }}
             />
             <TextField
               margin="dense"
-              id="horarioFinal"
+              id="HorarioFinal"
               name="HorarioFinal"
               label="Horário Final"
               type="datetime-local"
               fullWidth
-              required
               value={formData.HorarioFinal}
               onChange={handleChange}
+              InputLabelProps={{
+                shrink: true,
+              }}
             />
             <TextField
               margin="dense"
-              id="valor"
+              id="Valor"
               name="Valor"
               label="Valor"
               type="number"
               fullWidth
-              required
               value={formData.Valor}
               onChange={handleChange}
             />
             <TextField
               margin="dense"
-              id="publicoTotal"
+              id="PublicoTotal"
               name="PublicoTotal"
               label="Público Total"
               type="number"
               fullWidth
-              required
               value={formData.PublicoTotal}
               onChange={handleChange}
             />
             <FormControl fullWidth margin="dense">
-              <InputLabel htmlFor="idEspacoCultural">Espaço Cultural</InputLabel>
+              <InputLabel id="espacoCulturalLabel">Espaço Cultural</InputLabel>
               <Select
                 label="Espaço Cultural"
-                native
+                labelId="espacoCulturalLabel"
+                id="IdEspacoCultural"
+                name="IdEspacoCultural"
                 value={formData.IdEspacoCultural}
                 onChange={handleChange}
-                inputProps={{
-                  name: 'IdEspacoCultural',
-                  id: 'idEspacoCultural',
-                }}
               >
-                <option aria-label="None" value="" />
                 {espacosCulturais.map((espacoCultural) => (
-                  <option key={espacoCultural.IdEspacoCultural} value={espacoCultural.IdEspacoCultural}>
+                  <MenuItem key={espacoCultural.IdEspacoCultural} value={espacoCultural.IdEspacoCultural}>
                     {espacoCultural.Nome}
-                  </option>
-                ))}
-              </Select>
-            </FormControl>
-            <FormControl fullWidth margin="dense">
-              <InputLabel htmlFor="idEspaco">Espaço</InputLabel>
-              <Select
-                label="Espaço"
-                native
-                value={formData.IdEspaco}
-                onChange={handleChange}
-                inputProps={{
-                  name: 'IdEspaco',
-                  id: 'idEspaco',
-                }}
-              >
-                <option aria-label="None" value="" />
-                {espacos.map((espaco) => (
-                  <option key={espaco.IdEspaco} value={espaco.IdEspaco}>
-                    {espaco.Nome}
-                  </option>
-                ))}
-              </Select>
-            </FormControl>
-            <FormControl fullWidth margin="dense">
-              <InputLabel htmlFor="idCategoria">Categoria</InputLabel>
-              <Select
-                label="Categoria"
-                value={formData.IdCategoria}
-                onChange={handleChange}
-                inputProps={{
-                  name: 'IdCategoria',
-                  id: 'idCategoria',
-                }}
-              >
-                <MenuItem value="">
-                  <em>Nenhum</em>
-                </MenuItem>
-                {categorias.map((categoria) => (
-                  <MenuItem key={categoria.IdCategoria} value={categoria.IdCategoria}>
-                    <div style={{ display: 'flex', alignItems: 'center' }}>
-                      <div
-                        style={{
-                          width: '10px',
-                          height: '10px',
-                          borderRadius: '50%',
-                          backgroundColor: categoria.Cor,
-                          marginRight: '8px',
-                        }}
-                      />
-                      {categoria.Nome}
-                    </div>
                   </MenuItem>
                 ))}
               </Select>
             </FormControl>
+            <FormControl fullWidth margin="dense">
+              <InputLabel id="espacoLabel">Espaço</InputLabel>
+              <Select
+               label="Epaço"
+                labelId="espacoLabel"
+                id="IdEspaco"
+                name="IdEspaco"
+                value={formData.IdEspaco}
+                onChange={handleChange}
+              >
+                {espacos.map((espaco) => (
+                  <MenuItem key={espaco.IdEspaco} value={espaco.IdEspaco}>
+                    {espaco.Nome}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            <FormControl fullWidth margin="dense">
+                <InputLabel id="categoriaLabel">Categoria</InputLabel>
+                <Select
+                  label="Categoria"
+                  labelId="categoriaLabel"
+                  id="IdCategoria"
+                  name="IdCategoria"
+                  value={formData.IdCategoria}
+                  onChange={handleChange}
+                >
+                  {categorias.map((categoria) => (
+                    <MenuItem key={categoria.IdCategoria} value={categoria.IdCategoria}>
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          alignItems: 'center',
+                        }}
+                      >
+                        <Box
+                          sx={{
+                            width: 20,
+                            height: 20,
+                            borderRadius: '50%',
+                            backgroundColor: categoria.Cor, // Supondo que a cor está disponível como categoria.Cor
+                            marginRight: 1,
+                          }}
+                        />
+                        {categoria.Nome}
+                      </Box>
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
           </DialogContent>
           <DialogActions>
             <Button onClick={handleClose} color="primary">
@@ -423,13 +409,21 @@ const BigCalendar = () => {
           </DialogActions>
         </Dialog>
       </Box>
-      <Snackbar open={successMessage !== ''} autoHideDuration={6000} onClose={() => setSuccessMessage('')}>
-        <Alert onClose={() => setSuccessMessage('')} severity="success" sx={{ width: '100%' }}>
+      <Snackbar
+        open={Boolean(successMessage)}
+        autoHideDuration={6000}
+        onClose={() => setSuccessMessage('')}
+      >
+        <Alert onClose={() => setSuccessMessage('')} severity="success">
           {successMessage}
         </Alert>
       </Snackbar>
-      <Snackbar open={errorMessage !== ''} autoHideDuration={6000} onClose={() => setErrorMessage('')}>
-        <Alert onClose={() => setErrorMessage('')} severity="error" sx={{ width: '100%' }}>
+      <Snackbar
+        open={Boolean(errorMessage)}
+        autoHideDuration={6000}
+        onClose={() => setErrorMessage('')}
+      >
+        <Alert onClose={() => setErrorMessage('')} severity="error">
           {errorMessage}
         </Alert>
       </Snackbar>
@@ -437,4 +431,4 @@ const BigCalendar = () => {
   );
 };
 
-export default BigCalendar;
+export default BigCalendarComponent;

@@ -34,7 +34,7 @@ export default function EventList() {
       <Typography variant="h6" component="h2">
         Eventos
       </Typography>
-      <Box sx={{ width: '100%', maxHeight: '300px', overflowY: 'auto', mt: 2 }}>
+      <Box sx={{ width: '100%', maxHeight: '200px', overflowY: 'auto', mt: 2 }}>
         <List>
           {events.map(event => (
             <ListItem key={event.IdEvento}>

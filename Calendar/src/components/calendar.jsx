@@ -1,24 +1,29 @@
-// BIBLIOTECAS
 import React, { useState } from 'react';
-import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
-
-// FRAMEWORKS - MATERIAL UI
 import { Paper, Typography } from '@mui/material';
+import Calendar from 'react-calendar';
 
-export default function MyCalendar() {
+const MyCalendar = ({ onDateChange }) => {
   const [date, setDate] = useState(new Date());
 
+  const handleDateChange = (newDate) => {
+    setDate(newDate);
+    if (onDateChange) {
+      onDateChange(newDate);
+    }
+  };
+
   return (
-    <Paper elevation={3} sx={{ p: 2, width: '100%', display: 'flex', 
-        alignItems: 'center', flexDirection: 'column' }}>
+    <Paper elevation={3} sx={{ p: 2, width: '100%', display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
       <Typography variant="h6" component="h2">
         Calendário
       </Typography>
       <Calendar
-        onChange={setDate}
+        onChange={handleDateChange}
         value={date}
       />
     </Paper>
   );
-}
+};
+
+export default MyCalendar;
