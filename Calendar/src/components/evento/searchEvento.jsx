@@ -21,7 +21,7 @@ import {
 } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Link } from "react-router-dom";
-import { format } from "date-fns"; // Importando a função de formatação de datas
+import { format } from "date-fns";
 
 const theme = createTheme();
 
@@ -67,7 +67,7 @@ function SearchEspaco() {
   };
 
   const handleVoltar = () => {
-    navigate("/"); // Navegar de volta para a página inicial
+    navigate("/manager");
   };
 
   return (
@@ -92,7 +92,7 @@ function SearchEspaco() {
             component="form"
             onSubmit={handleSubmit}
             noValidate
-            sx={{ mt: 1, width: "30%", margin: "0 auto" }}
+            sx={{ mt: 1, width: "50%", margin: "0 auto" }}
           >
             <TextField
               margin="normal"
@@ -169,12 +169,12 @@ function SearchEspaco() {
                         <Checkbox checked={user.Ativo} readOnly />
                       </TableCell>
                       <TableCell>
-                      <Button
+                        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+                          <Button
                             component={Link}
                             to={`/atualizarevento/${user.IdEvento}`}
                             variant="contained"
                             color="warning"
-                            sx={{ marginRight: 1 }}
                           >
                             Editar
                           </Button>
@@ -186,6 +186,7 @@ function SearchEspaco() {
                           >
                             Detalhes
                           </Button>
+                        </Box>
                       </TableCell>
                     </TableRow>
                   ))}

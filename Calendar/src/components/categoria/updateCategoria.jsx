@@ -128,22 +128,24 @@ function UpdateCategoria() {
               label="Ativo"
               sx={{ mt: 2 }}
             />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            >
-              Salvar
-            </Button>
-            <Button
-              fullWidth
-              variant="contained"
-              onClick={handleVoltar}
-            >
-              Voltar
-            </Button>
+            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mt: 3, mb: 2 }}>
+              <Button
+                type="submit"
+                variant="contained"
+                sx={{ width: '150px', mb: 2 }}
+              >
+                Salvar
+              </Button>
+              <Button
+                variant="contained"
+                onClick={handleVoltar}
+                sx={{ width: '150px' }}
+              >
+                Voltar
+              </Button>
+            </Box>
           </Box>
+          
           {successMessage && (
             <Alert severity="success" sx={{ mt: 2 }}>
               {successMessage}

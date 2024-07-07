@@ -1,9 +1,6 @@
-// BIBLIOTECAS
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
-
-// FRAMEWORKS - MATERIAL UI
 import {
   Box,
   Button,
@@ -23,8 +20,7 @@ const theme = createTheme();
 
 function CreateEspaco() {
   const navigate = useNavigate();
-  const [formData, setFormData] 
-  = useState({
+  const [formData, setFormData] = useState({
     Nome: "",
     IdEspacoCultural: "",
   });
@@ -36,9 +32,7 @@ function CreateEspaco() {
   useEffect(() => {
     const fetchEspacosCulturais = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:3000/espacocultural"
-        );
+        const response = await axios.get("http://localhost:3000/espacocultural");
         setEspacosCulturais(response.data);
       } catch (error) {
         console.error("Erro ao carregar espaços culturais:", error);
@@ -56,10 +50,7 @@ function CreateEspaco() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await axios.post(
-        "http://localhost:3000/espaco",
-        formData
-      );
+      const response = await axios.post("http://localhost:3000/espaco", formData);
       console.log(response.data);
       setSuccessMessage("Espaço criado com sucesso!");
       setErrorMessage(""); // Limpa mensagem de erro se houver
@@ -75,7 +66,7 @@ function CreateEspaco() {
   };
 
   const handleVoltar = () => {
-    navigate("/"); // Navegar de volta para a página
+    navigate("/manager"); // Navegar de volta para a página
   };
 
   return (
@@ -106,9 +97,7 @@ function CreateEspaco() {
               onChange={handleChange}
             />
             <FormControl fullWidth sx={{ mt: 3 }}>
-              <InputLabel id="IdEspacoCultural-label">
-                Espaço Cultural
-              </InputLabel>
+              <InputLabel id="IdEspacoCultural-label">Espaço Cultural</InputLabel>
               <Select
                 labelId="IdEspacoCultural-label"
                 id="IdEspacoCultural"
@@ -122,26 +111,28 @@ function CreateEspaco() {
                   <em>Selecione um espaço cultural</em>
                 </MenuItem>
                 {espacosCulturais.map((espaco) => (
-                  <MenuItem
-                    key={espaco.IdEspacoCultural}
-                    value={espaco.IdEspacoCultural}
-                  >
+                  <MenuItem key={espaco.IdEspacoCultural} value={espaco.IdEspacoCultural}>
                     {espaco.Nome}
                   </MenuItem>
                 ))}
               </Select>
             </FormControl>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            >
-              Cadastrar
-            </Button>
-            <Button fullWidth variant="contained" onClick={handleVoltar}>
-              Voltar
-            </Button>
+            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mt: 3, mb: 2 }}>
+              <Button
+                type="submit"
+                variant="contained"
+                sx={{ width: '150px', mb: 2 }}
+              >
+                Cadastrar
+              </Button>
+              <Button
+                variant="contained"
+                onClick={handleVoltar}
+                sx={{ width: '150px' }}
+              >
+                Voltar
+              </Button>
+            </Box>
           </Box>
           {successMessage && (
             <Alert severity="success" sx={{ mt: 2 }}>

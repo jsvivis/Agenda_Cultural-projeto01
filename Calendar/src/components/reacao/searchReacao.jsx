@@ -65,7 +65,7 @@ function SearchReacao() {
   };
 
   const handleVoltar = () => {
-    navigate("/"); // Navegar de volta para a página
+    navigate("/manager"); // Navegar de volta para a página
   };
 
   // Função para converter o código Unicode em emoji

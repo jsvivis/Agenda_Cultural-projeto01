@@ -62,7 +62,7 @@ function CreateReacao() {
     };
 
     const handleVoltar = () => {
-        navigate("/"); // Navegar de volta para a página
+        navigate("/manager"); // Navegar de volta para a página
     };
 
     const open = Boolean(anchorEl);

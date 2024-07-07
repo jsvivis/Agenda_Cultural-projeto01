@@ -137,6 +137,7 @@ function UpdateEspaco() {
                 Espaço Cultural
               </InputLabel>
               <Select
+                label="Espaço Cultural"
                 labelId="IdEspacoCultural-label"
                 id="IdEspacoCultural"
                 name="IdEspacoCultural"
