@@ -30,7 +30,7 @@ export default function EventList() {
   };
 
   return (
-    <Paper elevation={3} sx={{ p: 2, width: '100%', display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
+    <Paper elevation={3} sx={{ p: 2, width: '100%', display: 'flex', alignItems: 'center', flexDirection: 'column', height: '57%' }}>
       <Typography variant="h6" component="h2">
         Eventos
       </Typography>

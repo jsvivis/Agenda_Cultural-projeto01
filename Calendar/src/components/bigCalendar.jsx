@@ -246,7 +246,7 @@ const BigCalendarComponent = ({ selectedDate }) => {
         events={events}
         startAccessor="start"
         endAccessor="end"
-        style={{ height: '100vh', width: '100%' }} // Exemplo utilizando unidades de viewport
+        style={{ height: '88vh', width: '100%' }}
         selectable
         onSelectSlot={handleSelectSlot}
         onSelectEvent={handleSelectEvent}
