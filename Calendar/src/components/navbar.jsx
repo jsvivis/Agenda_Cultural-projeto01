@@ -5,8 +5,8 @@ import { useNavigate } from 'react-router-dom';
 // FRAMEWORKS - MATERIAL UI
 import { Box, Typography, Avatar, Button } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import CssBaseline from '@mui/material/CssBaseline';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 const theme = createTheme();
 
@@ -75,7 +75,7 @@ export default function Navbar() {
         </Box>
         <Box sx={{ width: '15%', display: 'flex', justifyContent: 'center' }}>
           <Avatar onClick={navigateToHome}>
-            <CalendarMonthIcon />
+            <AccountCircleIcon />
           </Avatar>
         </Box>
       </Box>

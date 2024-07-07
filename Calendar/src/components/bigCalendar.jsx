@@ -143,10 +143,11 @@ const BigCalendarComponent = ({ selectedDate }) => {
 
   const handleSelectEvent = async (event) => {
     setCurrentEvent(event);
-
+    console.log(event.id)
     try {
       const response = await axios.get(`http://localhost:3000/evento/${event.IdEvento}`);
       const eventData = response.data;
+
 
       setFormData({
         IdEvento: eventData.IdEvento || '',
