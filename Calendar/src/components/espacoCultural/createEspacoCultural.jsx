@@ -72,6 +72,7 @@ function CreateEspacoCultural() {
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
+            console.log(formData)
             const response = await axios.post('http://localhost:3000/espacocultural', formData);
             console.log(response.data);
             setSuccessMessage("Espaço cultural criado com sucesso!");

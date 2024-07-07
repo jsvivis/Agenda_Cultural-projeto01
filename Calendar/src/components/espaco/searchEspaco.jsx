@@ -19,6 +19,7 @@ import {
   Checkbox,
   Alert,
   Paper,
+  FormControlLabel,
 } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Link } from "react-router-dom";
@@ -30,25 +31,31 @@ function SearchEspaco() {
   const [searchTerm, setSearchTerm] = useState("");
   const [users, setUsers] = useState([]);
   const [error, setError] = useState(null);
+  const [filterAtivo, setFilterAtivo] = useState(true);
 
   useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const response = await axios.get("http://localhost:3000/espaco");
-        setUsers(response.data);
-        setError(null);
-      } catch (error) {
-        console.error(error);
-        setUsers([]);
-        setError("Erro ao carregar espaços");
-      }
-    };
-
     fetchUsers();
-  }, []);
+  }, [filterAtivo]);
+
+  const fetchUsers = async () => {
+    try {
+      const response = await axios.get("http://localhost:3000/espaco");
+      const filteredUsers = filterAtivo ? response.data.filter(user => user.Ativo) : response.data;
+      setUsers(filteredUsers);
+      setError(null);
+    } catch (error) {
+      console.error(error);
+      setUsers([]);
+      setError("Erro ao carregar espaços");
+    }
+  };
 
   const handleChange = (event) => {
     setSearchTerm(event.target.value);
+  };
+
+  const handleFilterChange = (event) => {
+    setFilterAtivo(event.target.checked);
   };
 
   const handleSubmit = async (event) => {
@@ -57,7 +64,8 @@ function SearchEspaco() {
       const response = await axios.get(
         `http://localhost:3000/espacosearch/${searchTerm}`
       );
-      setUsers(response.data);
+      const filteredUsers = filterAtivo ? response.data.filter(user => user.Ativo) : response.data;
+      setUsers(filteredUsers);
       setError(null);
     } catch (error) {
       console.error(error);
@@ -67,7 +75,7 @@ function SearchEspaco() {
   };
 
   const handleVoltar = () => {
-    navigate("/manager"); // Navegar de volta para a página
+    navigate("/manager");
   };
 
   return (
@@ -86,7 +94,7 @@ function SearchEspaco() {
             <WindowIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-           Pesquisar Espaço
+            Pesquisar Espaço
           </Typography>
           <Box
             component="form"
@@ -106,11 +114,22 @@ function SearchEspaco() {
               onChange={handleChange}
               placeholder="Digite o nome do espaço"
             />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={filterAtivo}
+                  onChange={handleFilterChange}
+                  color="primary"
+                />
+              }
+              label="Mostrar apenas espaços ativos"
+              sx={{ mt: 2 }}
+            />
             <Box sx={{ display: 'flex', justifyContent: 'center', mt: 3, mb: 2 }}>
               <Button
                 type="submit"
                 variant="contained"
-                sx={{ width: 150 }} // Botão de busca menor
+                sx={{ width: 150 }}
               >
                 Buscar
               </Button>
@@ -162,7 +181,7 @@ function SearchEspaco() {
             <Button
               fullWidth
               variant="contained"
-              sx={{ width: 150 }} // Botão de voltar menor
+              sx={{ width: 150 }}
               onClick={handleVoltar}
             >
               Voltar

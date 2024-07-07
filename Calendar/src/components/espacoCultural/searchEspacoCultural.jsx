@@ -22,6 +22,7 @@ import {
   Paper,
   Alert,
   Checkbox,
+  FormControlLabel,
 } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
@@ -30,38 +31,45 @@ const theme = createTheme();
 function SearchEspacoCultural() {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
-  const [users, setUsers] = useState([]);
+  const [espacosCulturais, setEspacosCulturais] = useState([]);
   const [error, setError] = useState(null);
+  const [showActiveOnly, setShowActiveOnly] = useState(true);
 
   useEffect(() => {
-    const fetchUsers = async () => {
+    const fetchEspacosCulturais = async () => {
       try {
         const response = await axios.get("http://localhost:3000/espacocultural");
-        setUsers(response.data);
+        const filteredEspacos = response.data.filter(espaco => espaco.Ativo || !showActiveOnly);
+        setEspacosCulturais(filteredEspacos);
         setError(null);
       } catch (error) {
         console.error(error);
-        setUsers([]);
+        setEspacosCulturais([]);
         setError("Erro ao carregar espaços culturais");
       }
     };
 
-    fetchUsers();
-  }, []);
+    fetchEspacosCulturais();
+  }, [showActiveOnly]);
 
   const handleChange = (event) => {
     setSearchTerm(event.target.value);
+  };
+
+  const handleCheckboxChange = (event) => {
+    setShowActiveOnly(event.target.checked);
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
       const response = await axios.get(`http://localhost:3000/espacoculturalsearch/${searchTerm}`);
-      setUsers(response.data);
+      const filteredEspacos = response.data.filter(espaco => espaco.Ativo || !showActiveOnly);
+      setEspacosCulturais(filteredEspacos);
       setError(null);
     } catch (error) {
       console.error(error);
-      setUsers([]);
+      setEspacosCulturais([]);
       setError("Nenhum espaço cultural encontrado");
     }
   };
@@ -86,7 +94,7 @@ function SearchEspacoCultural() {
               <MuseumOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-          Pesquisar Espaço Cultural
+            Pesquisar Espaço Cultural
           </Typography>
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1, width: "30%", margin: "0 auto" }}>
             <TextField
@@ -101,21 +109,33 @@ function SearchEspacoCultural() {
               value={searchTerm}
               onChange={handleChange}
               placeholder="Digite o nome ou email do espaço cultural"
+              sx={{ maxWidth: 'calc(100% - 120px)', display: 'inline-block' }} // Ajuste de largura do campo de pesquisa
             />
-          <Box sx={{ display: 'flex', justifyContent: 'center', mt: 3, mb: 2 }}>
-            <Button
-              fullWidth
-              type="submit"
-              variant="contained"
-              sx={{ width: 150 }}
-            >
-
-              Buscar
-            </Button>
-          </Box>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={showActiveOnly}
+                  onChange={handleCheckboxChange}
+                  name="showActiveOnly"
+                  color="primary"
+                />
+              }
+              label="Mostrar apenas espaços culturais ativos"
+              sx={{ display: 'inline-block', verticalAlign: 'middle' }}
+            />
+            <Box sx={{ display: 'flex', justifyContent: 'center', mt: 3, mb: 2 }}>
+              <Button
+                fullWidth
+                type="submit"
+                variant="contained"
+                sx={{ width: 150 }}
+              >
+                Buscar
+              </Button>
+            </Box>
           </Box>
           {error && <Alert severity="error" sx={{ mt: 2, width: "100%" }}>{error}</Alert>}
-          {users.length > 0 && (
+          {espacosCulturais.length > 0 && (
             <TableContainer component={Paper} sx={{ mt: 3, width: "100%", border: "1px solid #ccc", borderRadius: "8px", padding: "16px" }}>
               <Table sx={{ minWidth: 650 }} aria-label="simple table">
                 <TableHead>
@@ -135,28 +155,28 @@ function SearchEspacoCultural() {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {users.map((user) => (
-                    <TableRow key={user.IdEspacoCultural}>
-                      <TableCell>{user.IdEspacoCultural}</TableCell>
-                      <TableCell>{user.Nome}</TableCell>
-                      <TableCell>{user.Cep}</TableCell>
-                      <TableCell>{user.Endereco}</TableCell>
-                      <TableCell>{user.Numero}</TableCell>
-                      <TableCell>{user.Complemento}</TableCell>
-                      <TableCell>{user.Cidade}</TableCell>
-                      <TableCell>{user.Estado}</TableCell>
-                      <TableCell>{user.Telefone}</TableCell>
-                      <TableCell>{user.Email}</TableCell>
+                  {espacosCulturais.map((espaco) => (
+                    <TableRow key={espaco.IdEspacoCultural}>
+                      <TableCell>{espaco.IdEspacoCultural}</TableCell>
+                      <TableCell>{espaco.Nome}</TableCell>
+                      <TableCell>{espaco.Cep}</TableCell>
+                      <TableCell>{espaco.Endereco}</TableCell>
+                      <TableCell>{espaco.Numero}</TableCell>
+                      <TableCell>{espaco.Complemento}</TableCell>
+                      <TableCell>{espaco.Cidade}</TableCell>
+                      <TableCell>{espaco.Estado}</TableCell>
+                      <TableCell>{espaco.Telefone}</TableCell>
+                      <TableCell>{espaco.Email}</TableCell>
                       <TableCell>
-                      <Checkbox
-                            checked={user.Ativo}
-                            readOnly
-                          />
+                        <Checkbox
+                          checked={espaco.Ativo}
+                          readOnly
+                        />
                       </TableCell>
                       <TableCell>
                         <Button
                           component={Link}
-                          to={`/atualizarespacocultural/${user.IdEspacoCultural}`}
+                          to={`/atualizarespacocultural/${espaco.IdEspacoCultural}`}
                           variant="contained" color="warning"
                         >
                           Editar

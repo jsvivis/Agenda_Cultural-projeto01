@@ -24,6 +24,19 @@ class EventoController {
       .catch((error) => res.status(400).json(error.message));
   }
 
+  search(req, res) {
+    
+    const { id } = req.params;
+    
+    const retorno = eventoModel.search(id);
+    return retorno
+      .then((result) =>
+        result.length == 0 
+        ? res.status(404).send("Evento não encontrado!") 
+        : res.status(200).json(result)
+      )
+  }
+
   create(req, res) {
    const { Descricao, HorarioInicial, HorarioFinal, IdEspaco, Nome, PublicoTotal, Valor, IdCategoria } = req.body;
 

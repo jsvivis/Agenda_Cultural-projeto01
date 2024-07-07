@@ -25,11 +25,12 @@ import { format } from "date-fns";
 
 const theme = createTheme();
 
-function SearchEspaco() {
+function SearchEvento() {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
   const [users, setUsers] = useState([]);
   const [error, setError] = useState(null);
+  const [showActiveOnly, setShowActiveOnly] = useState(true); // Estado para controlar filtro de ativos
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -69,6 +70,13 @@ function SearchEspaco() {
   const handleVoltar = () => {
     navigate("/manager");
   };
+
+  const handleCheckboxChange = () => {
+    setShowActiveOnly(!showActiveOnly); // Alternar entre ativos e inativos
+  };
+
+  // Filtrar eventos com base no estado de showActiveOnly
+  const filteredUsers = showActiveOnly ? users.filter(user => user.Ativo) : users;
 
   return (
     <ThemeProvider theme={theme}>
@@ -117,12 +125,22 @@ function SearchEspaco() {
               </Button>
             </Box>
           </Box>
+          <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 2 }}>
+            <Checkbox
+              checked={showActiveOnly}
+              onChange={handleCheckboxChange}
+              color="primary"
+            />
+            <Typography variant="body1">
+              Mostrar somente eventos ativos
+            </Typography>
+          </Box>
           {error && (
             <Alert severity="error" sx={{ mt: 2, width: "100%" }}>
               {error}
             </Alert>
           )}
-          {users.length > 0 && (
+          {filteredUsers.length > 0 && (
             <TableContainer 
               component={Box} 
               sx={{ 
@@ -135,7 +153,7 @@ function SearchEspaco() {
             >
               <Table sx={{ minWidth: 650 }} aria-label="simple table">
                 <TableHead>
-                <TableRow>
+                  <TableRow>
                     <TableCell align="center">Id</TableCell>
                     <TableCell align="center">Nome</TableCell>
                     <TableCell align="center">Horário Inicial</TableCell>
@@ -152,7 +170,7 @@ function SearchEspaco() {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {users.map((user) => (
+                  {filteredUsers.map((user) => (
                     <TableRow key={user.IdEvento}>
                       <TableCell>{user.IdEvento}</TableCell>
                       <TableCell>{user.Nome}</TableCell>
@@ -210,4 +228,4 @@ function SearchEspaco() {
   );
 }
 
-export default SearchEspaco;
+export default SearchEvento;

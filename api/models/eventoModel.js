@@ -29,6 +29,9 @@ class EventoModel {
         Evento.IdEspaco, 
         UsuarioCriador.Nome AS NomeUsuario, 
         Espaco.Nome AS NomeEspaco, 
+        EspacoCultural.Estado AS EstadoEspacoCultural,
+        EspacoCultural.Cidade AS CidadeEspacoCultural,
+        EspacoCultural.Endereco AS EnderecoEspacoCultural,
         Categoria.Nome AS NomeCategoria, 
         Categoria.Cor AS CorCategoria
       FROM 
@@ -36,9 +39,10 @@ class EventoModel {
         JOIN Usuario AS UsuarioCriador ON Evento.IdUsuario = UsuarioCriador.IdUsuario
         JOIN Espaco ON Evento.IdEspaco = Espaco.IdEspaco
         JOIN Categoria ON Evento.IdCategoria = Categoria.IdCategoria
+        JOIN EspacoCultural ON Espaco.IdEspacoCultural = EspacoCultural.IdEspacoCultural
     `;
     return this.executeSQL(sql); 
-  }
+  }  
 
   read(id) {
     const sql = `
@@ -60,6 +64,49 @@ class EventoModel {
     return this.executeSQL(sql, id); 
   }
 
+  search(parametro) {
+    const sql = `
+      SELECT 
+        Evento.IdEvento, 
+        Evento.Nome, 
+        Evento.Descricao, 
+        Evento.HorarioInicial, 
+        Evento.HorarioFinal, 
+        Evento.Valor, 
+        Evento.PublicoTotal, 
+        Evento.Ativo, 
+        Evento.IdUsuario, 
+        Evento.IdCategoria, 
+        Evento.IdEspaco, 
+        UsuarioCriador.Nome AS NomeUsuario, 
+        Espaco.Nome AS NomeEspaco, 
+        EspacoCultural.Nome AS NomeEspacoCultural, 
+        Categoria.Nome AS NomeCategoria, 
+        Categoria.Cor AS CorCategoria
+      FROM 
+        Evento
+        JOIN Usuario AS UsuarioCriador ON Evento.IdUsuario = UsuarioCriador.IdUsuario
+        JOIN Espaco ON Evento.IdEspaco = Espaco.IdEspaco
+        JOIN EspacoCultural ON Espaco.IdEspacoCultural = EspacoCultural.IdEspacoCultural
+        JOIN Categoria ON Evento.IdCategoria = Categoria.IdCategoria
+      WHERE 
+        Evento.IdEvento = ? 
+        OR Evento.Nome LIKE ? 
+        OR Espaco.Nome LIKE ? 
+        OR EspacoCultural.Nome LIKE ? 
+        OR EspacoCultural.Cidade LIKE ? 
+        OR EspacoCultural.Estado LIKE ?`;
+    const values = [
+      parametro,
+      `%${parametro}%`,
+      `%${parametro}%`,
+      `%${parametro}%`,
+      `%${parametro}%`,
+      `%${parametro}%`
+    ];
+    return this.executeSQL(sql, values);
+  }
+  
   create(novoEvento) {
     const sql = "INSERT INTO Evento SET ?"; 
     return this.executeSQL(sql, novoEvento);

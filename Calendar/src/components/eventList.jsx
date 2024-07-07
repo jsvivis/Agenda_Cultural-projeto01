@@ -9,11 +9,12 @@ export default function EventList() {
   useEffect(() => {
     axios.get('http://localhost:3000/evento')
       .then(response => {
-        // Ordenando os eventos por HorarioInicial após recebê-los da API
-        const sortedEvents = response.data.sort((a, b) => {
-          return new Date(a.HorarioInicial) - new Date(b.HorarioInicial);
-        });
-        setEvents(sortedEvents);
+        const currentDateTime = new Date();
+        // Filtrando os eventos para excluir eventos passados e ordenando por HorarioInicial
+        const filteredAndSortedEvents = response.data
+          .filter(event => new Date(event.HorarioInicial) >= currentDateTime)
+          .sort((a, b) => new Date(a.HorarioInicial) - new Date(b.HorarioInicial));
+        setEvents(filteredAndSortedEvents);
       })
       .catch(error => {
         console.error('Erro ao carregar eventos:', error);

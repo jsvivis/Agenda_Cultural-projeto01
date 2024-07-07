@@ -18,6 +18,7 @@ import {
   Paper,
   Checkbox,
   Avatar,
+  FormControlLabel,
 } from "@mui/material";
 import RecommendOutlinedIcon from '@mui/icons-material/RecommendOutlined';
 import { createTheme, ThemeProvider } from "@mui/material/styles";
@@ -28,39 +29,46 @@ const theme = createTheme();
 function SearchReacao() {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
-  const [users, setUsers] = useState([]);
+  const [reacoes, setReacoes] = useState([]);
   const [error, setError] = useState(null);
+  const [showActiveOnly, setShowActiveOnly] = useState(true);
 
   useEffect(() => {
-    const fetchUsers = async () => {
+    const fetchReacoes = async () => {
       try {
         const response = await axios.get("http://localhost:3000/reacao");
-        setUsers(response.data);
+        const filteredReacoes = response.data.filter(reacao => reacao.Ativo || !showActiveOnly);
+        setReacoes(filteredReacoes);
         setError(null);
       } catch (error) {
         console.error(error);
-        setUsers([]);
-        setError("Erro ao carregar usuários");
+        setReacoes([]);
+        setError("Erro ao carregar reações");
       }
     };
 
-    fetchUsers();
-  }, []);
+    fetchReacoes();
+  }, [showActiveOnly]);
 
   const handleChange = (event) => {
     setSearchTerm(event.target.value);
+  };
+
+  const handleCheckboxChange = (event) => {
+    setShowActiveOnly(event.target.checked);
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
       const response = await axios.get(`http://localhost:3000/reacaosearch/${searchTerm}`);
-      setUsers(response.data);
+      const filteredReacoes = response.data.filter(reacao => reacao.Ativo || !showActiveOnly);
+      setReacoes(filteredReacoes);
       setError(null);
     } catch (error) {
       console.error(error);
-      setUsers([]);
-      setError("Nenhum usuário encontrado");
+      setReacoes([]);
+      setError("Nenhuma reação encontrada");
     }
   };
 
@@ -104,6 +112,19 @@ function SearchReacao() {
               value={searchTerm}
               onChange={handleChange}
               placeholder="Digite o nome"
+              sx={{ maxWidth: 'calc(100% - 120px)', display: 'inline-block' }} // Ajuste de largura do campo de pesquisa
+            />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={showActiveOnly}
+                  onChange={handleCheckboxChange}
+                  name="showActiveOnly"
+                  color="primary"
+                />
+              }
+              label="Mostrar apenas reações ativas"
+              sx={{ display: 'inline-block', verticalAlign: 'middle' }}
             />
             <Box sx={{ display: 'flex', justifyContent: 'center', mt: 3, mb: 2 }}>
               <Button
@@ -116,7 +137,7 @@ function SearchReacao() {
             </Box>
           </Box>
           {error && <Alert severity="error" sx={{ mt: 2 }}>{error}</Alert>}
-          {users.length > 0 && (
+          {reacoes.length > 0 && (
             <TableContainer component={Paper} sx={{ mt: 3, width: '100%', maxHeight: 400, overflow: 'auto', border: '1px solid #ccc', borderRadius: '8px' }}>
               <Table size="small">
                 <TableHead>
@@ -129,21 +150,21 @@ function SearchReacao() {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {users.map((user) => (
-                    <TableRow key={user.IdReacao}>
-                      <TableCell>{user.IdReacao}</TableCell>
-                      <TableCell>{user.Nome}</TableCell>
-                      <TableCell>{getEmojiFromCode(user.Emoticon)}</TableCell> {/* Converter o código em emoji */}
+                  {reacoes.map((reacao) => (
+                    <TableRow key={reacao.IdReacao}>
+                      <TableCell>{reacao.IdReacao}</TableCell>
+                      <TableCell>{reacao.Nome}</TableCell>
+                      <TableCell>{getEmojiFromCode(reacao.Emoticon)}</TableCell> {/* Converter o código em emoji */}
                       <TableCell>
                         <Checkbox
-                          checked={user.Ativo}
+                          checked={reacao.Ativo}
                           readOnly
                         />
                       </TableCell>
                       <TableCell>
                         <Button 
                           component={Link}
-                          to={`/atualizarreacao/${user.IdReacao}`}
+                          to={`/atualizarreacao/${reacao.IdReacao}`}
                           variant="contained"
                           color="warning"
                           size="small" // Tamanho pequeno para o botão

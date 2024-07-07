@@ -20,6 +20,7 @@ import {
   Paper,
   Checkbox,
   Alert,
+  FormControlLabel,
 } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
@@ -30,32 +31,39 @@ function SearchCategoria() {
   const [searchTerm, setSearchTerm] = useState("");
   const [categorias, setCategorias] = useState([]);
   const [error, setError] = useState(null);
+  const [filterAtivo, setFilterAtivo] = useState(true);
 
   useEffect(() => {
-    const fetchCategorias = async () => {
-      try {
-        const response = await axios.get("http://localhost:3000/categoria");
-        setCategorias(response.data);
-        setError(null);
-      } catch (error) {
-        console.error(error);
-        setCategorias([]);
-        setError("Erro ao carregar categorias.");
-      }
-    };
-
     fetchCategorias();
-  }, []);
+  }, [filterAtivo]);
+
+  const fetchCategorias = async () => {
+    try {
+      const response = await axios.get("http://localhost:3000/categoria");
+      const filteredCategorias = filterAtivo ? response.data.filter(categoria => categoria.Ativo) : response.data;
+      setCategorias(filteredCategorias);
+      setError(null);
+    } catch (error) {
+      console.error(error);
+      setCategorias([]);
+      setError("Erro ao carregar categorias.");
+    }
+  };
 
   const handleChange = (event) => {
     setSearchTerm(event.target.value);
+  };
+
+  const handleFilterChange = (event) => {
+    setFilterAtivo(event.target.checked);
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
       const response = await axios.get(`http://localhost:3000/categoriasearch/${searchTerm}`);
-      setCategorias(response.data);
+      const filteredCategorias = filterAtivo ? response.data.filter(categoria => categoria.Ativo) : response.data;
+      setCategorias(filteredCategorias);
       setError(null);
     } catch (error) {
       console.error(error);
@@ -98,11 +106,22 @@ function SearchCategoria() {
               value={searchTerm}
               onChange={handleChange}
             />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={filterAtivo}
+                  onChange={handleFilterChange}
+                  color="primary"
+                />
+              }
+              label="Mostrar apenas categorias ativas"
+              sx={{ mt: 2 }}
+            />
             <Box sx={{ display: 'flex', justifyContent: 'center', mt: 3, mb: 2 }}>
               <Button
                 type="submit"
                 variant="contained"
-                sx={{ width: 150 }} // Botão de busca menor
+                sx={{ width: 150 }}
               >
                 Buscar
               </Button>
@@ -169,7 +188,7 @@ function SearchCategoria() {
             <Button
               fullWidth
               variant="contained"
-              sx={{ width: 150 }} // Botão de voltar menor
+              sx={{ width: 150 }}
               onClick={handleVoltar}
             >
               Voltar

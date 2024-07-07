@@ -19,6 +19,7 @@ import {
   Paper,
   Checkbox,
   Avatar,
+  FormControlLabel,
 } from "@mui/material";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Alert from '@mui/material/Alert';
@@ -30,12 +31,14 @@ function UserSearch() {
   const [searchTerm, setSearchTerm] = useState("");
   const [users, setUsers] = useState([]);
   const [error, setError] = useState(null);
+  const [showActiveOnly, setShowActiveOnly] = useState(true);
 
   useEffect(() => {
     const fetchUsers = async () => {
       try {
         const response = await axios.get("http://localhost:3000/usuario");
-        setUsers(response.data);
+        const filteredUsers = response.data.filter(user => user.Ativo || !showActiveOnly);
+        setUsers(filteredUsers);
         setError(null);
       } catch (error) {
         console.error(error);
@@ -45,17 +48,22 @@ function UserSearch() {
     };
 
     fetchUsers();
-  }, []);
+  }, [showActiveOnly]);
 
   const handleChange = (event) => {
     setSearchTerm(event.target.value);
+  };
+
+  const handleCheckboxChange = (event) => {
+    setShowActiveOnly(event.target.checked);
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
       const response = await axios.get(`http://localhost:3000/usuariosearch/${searchTerm}`);
-      setUsers(response.data);
+      const filteredUsers = response.data.filter(user => user.Ativo || !showActiveOnly);
+      setUsers(filteredUsers);
       setError(null);
     } catch (error) {
       console.error(error);
@@ -99,7 +107,19 @@ function UserSearch() {
               value={searchTerm}
               onChange={handleChange}
               placeholder="Digite o nome ou email do usuário"
-              sx={{ maxWidth: 'calc(100% - 120px)' }} // Ajuste de largura do campo de pesquisa
+              sx={{ maxWidth: 'calc(100% - 120px)', display: 'inline-block' }} // Ajuste de largura do campo de pesquisa
+            />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={showActiveOnly}
+                  onChange={handleCheckboxChange}
+                  name="showActiveOnly"
+                  color="primary"
+                />
+              }
+              label="Mostrar apenas usuários ativos"
+              sx={{ display: 'inline-block', verticalAlign: 'middle' }}
             />
             <Box sx={{ display: 'flex', justifyContent: 'center', mt: 3, mb: 2 }}>
               <Button
