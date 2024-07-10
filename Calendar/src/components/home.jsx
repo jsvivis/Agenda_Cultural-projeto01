@@ -4,6 +4,7 @@ import MyCalendar from './calendar'; // Renomeado para evitar conflitos
 import BigCalendarComponent from './bigCalendar'; // Renomeado para evitar conflitos
 
 import '../styles/home.css';
+import '../styles/index.css';
 
 export default function Home() {
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -16,8 +17,12 @@ export default function Home() {
     <>
       <div className='body-home'>
         <div className='sidebar'>
-          <EventList />
-          <MyCalendar onDateChange={handleDateChange} />
+          <div className='event-list'>
+            <EventList />
+          </div>
+          <div className='calendar'>
+            <MyCalendar onDateChange={handleDateChange} />
+          </div>
         </div>
         <BigCalendarComponent selectedDate={selectedDate} />
       </div>

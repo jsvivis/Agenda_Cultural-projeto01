@@ -30,7 +30,7 @@ class EspacoModel {
   }
 
   read(id) {
-    const sql = "SELECT Espaco.IdEspaco, Espaco.Nome, Espaco.Ativo, Espaco.IdEspacoCultural, EspacoCultural.Nome AS NomeEspacoCultural FROM Espaco JOIN EspacoCultural ON Espaco.IdEspacoCultural = EspacoCultural.IdEspacoCultural WHERE Espaco.IdEspaco = ?"; 
+    const sql = "SELECT Espaco.IdEspaco, Espaco.Nome, Espaco.Ativo, Espaco.IdEspacoCultural, EspacoCultural.Nome AS NomeEspacoCultural FROM Espaco JOIN EspacoCultural ON Espaco.IdEspacoCultural = EspacoCultural.IdEspacoCultural WHERE Espaco.IdEspacoCultural = ?"; 
     return this.executeSQL(sql, id); 
   }
 

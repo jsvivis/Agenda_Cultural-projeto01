@@ -14,9 +14,9 @@ const MyCalendar = ({ onDateChange }) => {
   };
 
   return (
-    <Paper elevation={3} sx={{ p: 2, width: '100%', display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
-      <Typography variant="h6" component="h2">
-        Calendário
+    <Paper elevation={3} sx={{ p: 2, width: '100%', display: 'flex', alignItems: 'center', flexDirection: 'column', paddingBottom:'30px'}}>
+      <Typography variant="h6" component="h2" fontFamily='Signika'>
+      <b>Calendário</b>
       </Typography>
       <Calendar
         onChange={handleDateChange}

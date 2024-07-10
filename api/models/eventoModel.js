@@ -30,6 +30,8 @@ class EventoModel {
         UsuarioCriador.Nome AS NomeUsuario, 
         Espaco.Nome AS NomeEspaco, 
         EspacoCultural.Estado AS EstadoEspacoCultural,
+        EspacoCultural.IdEspacoCultural,
+        EspacoCultural.Nome as NomeEspacoCultural,
         EspacoCultural.Cidade AS CidadeEspacoCultural,
         EspacoCultural.Endereco AS EnderecoEspacoCultural,
         Categoria.Nome AS NomeCategoria, 

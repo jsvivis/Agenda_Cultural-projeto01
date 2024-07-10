@@ -29,23 +29,29 @@ export default function EventList() {
       return dateTimeString;
     }
   };
-
   return (
-    <Paper elevation={3} sx={{ p: 2, width: '100%', display: 'flex', alignItems: 'center', flexDirection: 'column', height: '57%' }}>
-      <Typography variant="h6" component="h2">
-        Eventos
+    <Paper elevation={3} sx={{p: 2, width: '100%', display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
+      <Typography variant="h6" component="h2" fontFamily='Signika'>
+        <b>Próximos Eventos</b>
       </Typography>
-      <Box sx={{ width: '100%', maxHeight: '200px', overflowY: 'auto', mt: 2 }}>
-        <List>
-          {events.map(event => (
+      <Box sx={{ width: '100%', maxHeight: '300px', overflowY: 'auto', mt: 2 }}>
+      <List>
+      {events.map(event => (
             <ListItem key={event.IdEvento}>
               <ListItemText
                 primary={event.Nome}
-                secondary={formatDateTime(event.HorarioInicial)}
+                secondary={
+                  <>
+                    {formatDateTime(event.HorarioInicial)}
+                    <Typography variant="body2" color="textSecondary">
+                      {event.NomeEspacoCultural} - {event.NomeEspaco}
+                    </Typography>
+                  </>
+                }
               />
             </ListItem>
-          ))}
-        </List>
+        ))}
+      </List>
       </Box>
     </Paper>
   );

@@ -32,7 +32,7 @@ CREATE TABLE Categoria (
 /* Armazenar os espaços culturais */
 CREATE TABLE EspacoCultural (
     IdEspacoCultural INT PRIMARY KEY AUTO_INCREMENT,
-    Nome VARCHAR(30) NOT NULL,
+    Nome VARCHAR(60) NOT NULL,
     Cep INT NOT NULL,
     Endereco VARCHAR(100) NOT NULL,
     Numero VARCHAR(20) NOT NULL,
@@ -48,7 +48,7 @@ CREATE TABLE EspacoCultural (
 /* Para armazenar os espaços dentro de um espaço cultural */
 CREATE TABLE Espaco (
     IdEspaco INT PRIMARY KEY AUTO_INCREMENT,
-    Nome VARCHAR(30) NOT NULL,
+    Nome VARCHAR(50) NOT NULL,
     Ativo BOOLEAN DEFAULT TRUE,
     IdEspacoCultural INT NOT NULL,
     FOREIGN KEY (IdEspacoCultural) REFERENCES EspacoCultural(IdEspacoCultural) ON DELETE CASCADE,
@@ -58,7 +58,7 @@ CREATE TABLE Espaco (
 /* Eventos associados a espaço, usuário e tema --> e inicialmente fica oculto até aprovação de administrador */
 CREATE TABLE Evento (
     IdEvento INT PRIMARY KEY AUTO_INCREMENT,
-    Nome VARCHAR(50) NOT NULL,
+    Nome VARCHAR(100) NOT NULL,
     Descricao TEXT NOT NULL,
     HorarioInicial DATETIME NOT NULL,
     HorarioFinal DATETIME NOT NULL,
@@ -138,30 +138,59 @@ INSERT INTO Perfil (PerfilUsuario) VALUES
 
 /* Inserir dados fictícios na tabela Usuario */
 INSERT INTO Usuario (Nome, Email, Senha, Ativo, IdPerfil) VALUES 
-('Admin User', 'admin@admin', '$10$VKD0vPKgj1.ZZt5GMnDnXOOgkjfz8jno.g8SuJUsSzXSNJCluZkyS', TRUE, 1),
+('Admin User', 'admin@admin', '123', TRUE, 1),
 ('Regular User', 'regular@user', '123', TRUE, 2);
 
 /* Inserir dados fictícios na tabela Categoria */
 INSERT INTO Categoria (Nome, Ativo, Cor) VALUES 
-('Música', TRUE, '#FF0000'), 
-('Teatro', TRUE, '#00FF00'), 
-('Dança', TRUE, '#0000FF');
+('Artes Cênicas', TRUE, '#FF0000'), 
+('Cinema', TRUE, '#00FF00'), 
+('Exposição', TRUE, '#00FF00'),
+('Música', TRUE, '#00FF00'),
+('Inovação', TRUE, '#00FF00'),
+('Outros', TRUE, '#0000FF');
 
 /* Inserir dados fictícios na tabela EspacoCultural */
 INSERT INTO EspacoCultural (Nome, Cep, Endereco, Numero, Complemento, Cidade, Estado, Telefone, Email, Ativo) VALUES 
-('Espaço Cultural 1', 12345678, 'Rua A', '123', 'Apto 1', 'Cidade A', 'Estado A', '123456789', 'espacocultural1@example.com', TRUE),
-('Espaço Cultural 2', 87654321, 'Rua B', '456', 'Apto 2', 'Cidade B', 'Estado B', '987654321', 'espacocultural2@example.com', TRUE);
+('Usina Cultural - Paraíba', 12345678, 'Rua A', '123', 'Apto 1', 'Cidade A', 'Estado A', '123456789', 'espacocultural1@example.com', TRUE),
+('Anfiteatro - Cataguases', 87654321, 'Rua B', '456', 'Apto 2', 'Cidade B', 'Estado B', '987654321', 'espacocultural2@example.com', TRUE),
+('Centro Cultural - Cataguases', 87654321, 'Rua B', '456', 'Apto 2', 'Cidade B', 'Estado B', '987654321', 'espacocultural2@example.com', TRUE),
+('Usina Cultural - Nova Friburgo', 54321678, 'Rua C', '789', 'Apto 3', 'Cidade C', 'Estado C', '111111111', 'espacocultural3@example.com', TRUE);
 
 /* Inserir dados fictícios na tabela Espaco */
 INSERT INTO Espaco (Nome, Ativo, IdEspacoCultural) VALUES 
-('Espaço 1-1', TRUE, 1), 
-('Espaço 1-2', TRUE, 1), 
-('Espaço 2-1', TRUE, 2);
+('Galeria de Arte', TRUE, 1), 
+('Galeria Alexandre Filho', TRUE, 1), 
+('Sala Vladimir Carvalho', TRUE, 1),
+('Tenda da Música', TRUE, 1),
+('Café da Usina', TRUE, 1),
+('Palco', TRUE, 1),
+('Anfiteatro Ivan Mulher Botelho', TRUE, 2),
+('Cineteatro Paulo César Sarraceni', TRUE, 3),
+('Galeria Zequinha Mauro', TRUE, 3),
+('Memorial Humberto Mauro', TRUE, 3),
+('Teatro da Usina', TRUE, 4),
+('Salão Nobre', TRUE, 4),
+('Galerias', TRUE, 4),
+('Anexo', TRUE, 4),
+('Terraço', TRUE, 4),
+('Espaço Café', TRUE, 4);
 
 /* Inserir dados fictícios na tabela Evento */
 INSERT INTO Evento (Nome, Descricao, HorarioInicial, HorarioFinal, Valor, Publico, PublicoTotal, Ativo, Liberado, IdUsuario, IdEspaco, IdCategoria) VALUES 
-('Evento 1', 'Descrição do Evento 1', '2024-07-01 10:00:00', '2024-07-01 12:00:00', 100.0, 50, 100, TRUE, TRUE, 1, 1, 1),
-('Evento 2', 'Descrição do Evento 2', '2024-07-02 14:00:00', '2024-07-02 16:00:00', 50.0, 25, 50, FALSE, FALSE, 2, 2, 2);
+('Vernissage', 'Descrição do Evento 1', '2024-07-01 10:00:00', '2024-07-01 12:00:00', 100.0, 50, 100, TRUE, TRUE, 1, 1, 1),
+('Lançamento do livro: "OUTONO - MEMORIAL DA ESCRITURA"', 'Descrição do Evento 2', '2024-07-02 14:00:00', '2024-07-02 16:00:00', 50.0, 25, 50, FALSE, FALSE, 2, 2, 2),
+('Quiosque da Poesia - com Carlyto Campos', 'Descrição do Evento 3', '2024-07-10 15:00:00', '2024-07-10 17:00:00', 80.0, 30, 50, TRUE, TRUE, 1, 2, 1),
+('Encontro de Vinil', 'Descrição do Evento 4', '2024-07-15 19:00:00', '2024-07-15 21:00:00', 120.0, 60, 80, TRUE, TRUE, 2, 3, 2),
+('Espetáculo Jequitibá-Rosa - por Amanda Gouveia  e Jhasmyna', 'Descrição do Evento 5', '2024-07-20 10:00:00', '2024-07-20 12:00:00', 50.0, 20, 30, TRUE, TRUE, 1, 7, 3),
+('Tramatopia', 'Descrição do Evento 6', '2024-07-25 14:00:00', '2024-07-25 16:00:00', 100.0, 40, 60, TRUE, TRUE, 2, 7, 1),
+('Festival Ver e Fazer Filmes', 'Descrição do Evento 7', '2024-07-30 17:00:00', '2024-07-30 19:00:00', 70.0, 25, 40, TRUE, TRUE, 1, 8, 2),
+('Encontro Escrevendo com Escritor', 'Descrição do Evento 8', '2024-08-05 11:00:00', '2024-08-05 13:00:00', 90.0, 35, 50, TRUE, TRUE, 2, 9, 3),
+('Fórum Visionário', 'Descrição do Evento 9', '2024-08-10 16:00:00', '2024-08-10 18:00:00', 110.0, 45, 70, TRUE, TRUE, 1, 10, 1),
+('Summit Executivo', 'Descrição do Evento 10', '2024-08-15 20:00:00', '2024-08-15 22:00:00', 150.0, 75, 100, TRUE, TRUE, 2, 10, 2),
+('Seminário de Excelência', 'Descrição do Evento 11', '2024-08-20 09:00:00', '2024-08-20 11:00:00', 60.0, 30, 40, TRUE, TRUE, 1, 11, 3),
+('Jornada do Conhecimento', 'Descrição do Evento 12', '2024-08-25 15:00:00', '2024-08-25 17:00:00', 85.0, 40, 60, TRUE, TRUE, 2, 12, 1),
+('Conferência de Visão', 'Descrição do Evento 13', '2024-08-30 18:00:00', '2024-08-30 20:00:00', 75.0, 35, 50, TRUE, TRUE, 1, 14, 2);
 
 /* Inserir dados fictícios na tabela Arquivo */
 INSERT INTO Arquivo (Caminho, IdEvento) VALUES 

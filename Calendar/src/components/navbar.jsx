@@ -1,82 +1,64 @@
 // BIBLIOTECAS
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 // FRAMEWORKS - MATERIAL UI
-import { Box, Typography, Avatar, Button } from '@mui/material';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
+import { Box, Typography, IconButton, CssBaseline, TextField, InputAdornment, InputBase } from '@mui/material';
+import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import NotificationsIcon from '@mui/icons-material/Notifications';
+import SearchIcon from '@mui/icons-material/Search';
+import HandymanIcon from '@mui/icons-material/Handyman';
 
 const theme = createTheme();
 
-const useNavigateTo = (path) => {
-  const navigate = useNavigate();
-  return () => navigate(path);
-};
+const CustomSearch = styled(InputBase)(({ theme }) => ({
+  width: '250px',
+  backgroundColor: '#fff',
+  borderRadius: '30px',
+  paddingLeft: theme.spacing(2),
+  paddingRight: theme.spacing(2),
+  height: '40px',
+  display: 'flex',
+  alignItems: 'center',
+}));
 
 export default function Navbar() {
-  const navigateToManager = useNavigateTo('/manager');
-  const navigateToHome = useNavigateTo('/'); // Função para navegar para a homepage ("/")
-
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          width: '100%',
-          height: '80px',
-          backgroundColor: '#222222',
-          m: 0,
-          p: 0,
-        }}
-      >
-        <Button
-          onClick={navigateToHome}
-          sx={{
-            width: '27%',
-            color: '#fff',
-            display: 'flex',
-            justifyContent: 'center',
-            textTransform: 'none',
-            backgroundColor: 'transparent',
-            '&:hover': { backgroundColor: 'transparent' },
-          }}
-        >
-          <Typography
-            variant="h4"
-            component="h1"
-            sx={{
-              color: '#fff',
-              display: 'flex',
-              justifyContent: 'center',
-            }}
-          >
-            Agenda Instituto
-          </Typography>
-        </Button>
-        <Box sx={{ width: '58%', display: 'flex', justifyContent: 'center' }}>
-          <Button
-            sx={{
-              color: '#fff',
-              fontSize: '1.2rem',
-              fontWeight: '600',
-              border: 'solid 2px #fff',
-              borderRadius: '5px',
-              '&:hover': { border: 'solid 2px #fff', color: 'green' },
-            }}
-            onClick={navigateToManager}
-          >
-            Gerenciador
-          </Button>
-        </Box>
-        <Box sx={{ width: '15%', display: 'flex', justifyContent: 'center' }}>
-          <Avatar onClick={navigateToHome}>
-            <AccountCircleIcon />
-          </Avatar>
+      <Box sx={{
+        display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+        width: '100%', height: '80px', backgroundColor: '#1E90FF', m: 0, p: 0
+      }}>
+        <Typography variant="h4" component="h1"
+          sx={{ width: '27%', color: '#fff', display: 'flex', justifyContent: 'center' }}>
+
+          {/* Voltar para a Home Page */}
+          <Link to="/" style={{ color: '#FFF', textDecoration: 'none', fontFamily: 'Varela Round', marginLeft: '40px' }}>
+            AGENDA CULTURAL
+          </Link>
+
+        </Typography>
+        <Box sx={{ display: 'flex', alignItems: 'center', ml: 'auto', mr: 6 }}>
+          <CustomSearch marginRight
+            startAdornment={
+              <InputAdornment position="start">
+                <SearchIcon />
+              </InputAdornment>
+            }
+            placeholder="Pesquisar"
+          />
+
+          <IconButton component={Link} to="/manager" sx={{ color: '#fff', ml: 5 }}>
+            <HandymanIcon fontSize="large" />
+          </IconButton>
+          <IconButton sx={{ color: '#fff', ml: 1 }}>
+            <NotificationsIcon fontSize="large" />
+          </IconButton>
+          <IconButton component={Link} to="/perfil" sx={{ color: '#fff', ml: 1 }}>
+            <AccountCircleIcon fontSize="large" />
+          </IconButton>
         </Box>
       </Box>
     </ThemeProvider>

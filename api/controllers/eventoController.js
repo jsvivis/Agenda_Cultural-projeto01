@@ -48,7 +48,8 @@ class EventoController {
     Nome,
     IdCategoria,
     PublicoTotal: parseInt(PublicoTotal), // Convertendo para inteiro
-    Valor: parseFloat(Valor) // Convertendo para float
+    Valor: parseFloat(Valor),
+    IdUsuario: 1
   };
     const retorno = eventoModel.create(eventoData);
     return retorno

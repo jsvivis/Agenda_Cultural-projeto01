@@ -24,21 +24,22 @@ export default function Manager() {
       <Container component="main" maxWidth="md">
         <Box
           sx={{
-            marginTop: 8,
+            marginTop: 5,
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
             justifyContent: "center",
+            paddingBottom:'30px'
           }}
         >
-          <Typography component="h1" variant="h4" gutterBottom>
-            Gerenciador
+          <Typography component="h1" variant="h4" gutterBottom fontFamily='signika'>
+            <b>Gerenciador</b>
           </Typography>
 
           <Grid container spacing={2} justifyContent="center">
             <Grid item xs={12} sm={10} md={8}>
               <Paper elevation={6} sx={{ padding: 1 }}>
-                <Typography variant="h5" gutterBottom>
+                <Typography variant="h5" gutterBottom fontFamily='signika'>
                   Eventos
                 </Typography>
                 <Box display="flex" justifyContent="space-around">
@@ -58,21 +59,21 @@ export default function Manager() {
                   >
                     Pesquisar
                   </Button>
-                  <Button
+                  {/* <Button
                     component={RouterLink}
                     to="/gerenciarevento"
                     variant="contained"
                     color="primary"
                   >
                     Gerenciar
-                  </Button>
+                  </Button> */}
                 </Box>
               </Paper>
             </Grid>
 
             <Grid item xs={12} sm={10} md={8}>
               <Paper elevation={6} sx={{ padding: 1 }}>
-                <Typography variant="h5" gutterBottom>
+                <Typography variant="h5" gutterBottom fontFamily='signika'>
                   Usuário
                 </Typography>
                 <Box display="flex" justifyContent="space-around">
@@ -98,7 +99,7 @@ export default function Manager() {
 
             <Grid item xs={12} sm={10} md={8}>
               <Paper elevation={6} sx={{ padding: 1 }}>
-                <Typography variant="h5" gutterBottom>
+                <Typography variant="h5" gutterBottom fontFamily='signika'>
                   Espaço Cultural
                 </Typography>
                 <Box display="flex" justifyContent="space-around">
@@ -124,7 +125,7 @@ export default function Manager() {
 
             <Grid item xs={12} sm={10} md={8}>
               <Paper elevation={6} sx={{ padding: 1 }}>
-                <Typography variant="h5" gutterBottom>
+                <Typography variant="h5" gutterBottom fontFamily='signika'>
                   Espaço
                 </Typography>
                 <Box display="flex" justifyContent="space-around">
@@ -150,7 +151,7 @@ export default function Manager() {
 
             <Grid item xs={12} sm={10} md={8}>
               <Paper elevation={6} sx={{ padding: 1 }}>
-                <Typography variant="h5" gutterBottom>
+                <Typography variant="h5" gutterBottom fontFamily='signika'>
                   Categoria
                 </Typography>
                 <Box display="flex" justifyContent="space-around">
@@ -176,7 +177,7 @@ export default function Manager() {
 
             <Grid item xs={12} sm={10} md={8}>
               <Paper elevation={6} sx={{ padding: 1 }}>
-                <Typography variant="h5" gutterBottom>
+                <Typography variant="h5" gutterBottom fontFamily='signika'>
                   Reação
                 </Typography>
                 <Box display="flex" justifyContent="space-around">
