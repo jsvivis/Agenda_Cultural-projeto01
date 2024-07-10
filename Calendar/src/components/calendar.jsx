@@ -19,8 +19,9 @@ const MyCalendar = ({ onDateChange }) => {
       <b>Calendário</b>
       </Typography>
       <Calendar
-        onChange={handleDateChange}
-        value={date}
+          onChange={handleDateChange}
+          value={date}
+          locale="en-US" 
       />
     </Paper>
   );
