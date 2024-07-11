@@ -30,6 +30,20 @@ class EspacoController {
       .catch((error) => res.status(400).json(error.message));
   }
 
+  readEspaco(req, res) {
+    
+    const { id } = req.params;
+    
+    const retorno = espacoModel.readEspaco(id);
+    return retorno
+      .then((result) =>
+        result.length == 0 
+        ? res.status(404).send("Espaço não encontrado!") 
+        : res.status(200).json(result)
+      )
+      .catch((error) => res.status(400).json(error.message));
+  }
+
   search(req, res) {
     
     const { id } = req.params;

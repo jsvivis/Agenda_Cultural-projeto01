@@ -43,7 +43,7 @@ function UpdateEspaco() {
   useEffect(() => {
     const fetchEspaco = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/espaco/${id}`);
+        const response = await axios.get(`http://localhost:3000/espacoEditar/${id}`);
         const userData = response.data[0]; // Acessa o primeiro objeto no array
         setUser({
           Nome: userData.Nome,

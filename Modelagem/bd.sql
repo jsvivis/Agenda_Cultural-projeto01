@@ -143,12 +143,12 @@ INSERT INTO Usuario (Nome, Email, Senha, Ativo, IdPerfil) VALUES
 
 /* Inserir dados fictícios na tabela Categoria */
 INSERT INTO Categoria (Nome, Ativo, Cor) VALUES 
-('Artes Cênicas', TRUE, '#FF0000'), 
-('Cinema', TRUE, '#00FF00'), 
-('Exposição', TRUE, '#00FF00'),
-('Música', TRUE, '#00FF00'),
-('Inovação', TRUE, '#00FF00'),
-('Outros', TRUE, '#0000FF');
+('Artes Cênicas', TRUE, '#ee7272'), 
+('Cinema', TRUE, '#57f457'), 
+('Exposição', TRUE, '#e6d041'),
+('Música', TRUE, '#54f0f2'),
+('Inovação', TRUE, '#c743d0'),
+('Outros', TRUE, '#7b3737');
 
 /* Inserir dados fictícios na tabela EspacoCultural */
 INSERT INTO EspacoCultural (Nome, Cep, Endereco, Numero, Complemento, Cidade, Estado, Telefone, Email, Ativo) VALUES 
@@ -209,9 +209,9 @@ INSERT INTO Link (Link, IdEvento) VALUES
 
 /* Inserir dados fictícios na tabela Reacao */
 INSERT INTO Reacao (Nome, Emoticon, Ativo) VALUES 
-('Gostei', '1F60D', TRUE), 
+('Gostei', '1F60A', TRUE), 
 ('Amei', '1F60D', TRUE), 
-('Haha', '1F60D', TRUE);
+('Haha', '1F602', TRUE);
 
 /* Inserir dados fictícios na tabela ReacaoUsuario */
 INSERT INTO ReacaoUsuario (IdReacao, IdUsuario, IdEvento) VALUES 

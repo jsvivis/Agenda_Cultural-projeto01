@@ -41,23 +41,9 @@ export default function Navbar() {
 
         </Typography>
         <Box sx={{ display: 'flex', alignItems: 'center', ml: 'auto', mr: 6 }}>
-          <CustomSearch marginRight
-            startAdornment={
-              <InputAdornment position="start">
-                <SearchIcon />
-              </InputAdornment>
-            }
-            placeholder="Pesquisar"
-          />
 
           <IconButton component={Link} to="/manager" sx={{ color: '#fff', ml: 5 }}>
             <HandymanIcon fontSize="large" />
-          </IconButton>
-          <IconButton sx={{ color: '#fff', ml: 1 }}>
-            <NotificationsIcon fontSize="large" />
-          </IconButton>
-          <IconButton component={Link} to="/perfil" sx={{ color: '#fff', ml: 1 }}>
-            <AccountCircleIcon fontSize="large" />
           </IconButton>
         </Box>
       </Box>

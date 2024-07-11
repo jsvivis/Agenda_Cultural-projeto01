@@ -28,6 +28,7 @@ const localizer = momentLocalizer(moment);
 
 const BigCalendarComponent = ({ selectedDate }) => {
   const [events, setEvents] = useState([]);
+  const [currentDate, setCurrentDate] = useState(selectedDate);
   const [filteredEvents, setFilteredEvents] = useState([]);
   const [open, setOpen] = useState(false);
   const [currentEvent, setCurrentEvent] = useState(null);
@@ -177,6 +178,11 @@ const BigCalendarComponent = ({ selectedDate }) => {
     setSelectedCategoria(event.target.value);
   };
 
+  const handleDateChange = (newDate) => {
+    setCurrentDate(newDate);
+  };
+
+
  const fetchEspacos = async (idEspacoCultural) => {
   try {
     const response = await axios.get(`http://localhost:3000/espaco/${idEspacoCultural}`);
@@ -202,8 +208,6 @@ const BigCalendarComponent = ({ selectedDate }) => {
     });
     setOpen(true);
   };
-
-
 
   const messages = {
     allDay: 'Dia inteiro',
@@ -337,6 +341,7 @@ const BigCalendarComponent = ({ selectedDate }) => {
       <Box sx={{ mt: 3, width: '100%', }}>
         <Box sx={{ height: 715, mt: 3 }}>
         <BigCalendar
+        defaultDate={currentDate}
           localizer={localizer}
           events={filteredEvents}
           startAccessor="start"
@@ -424,7 +429,7 @@ const BigCalendarComponent = ({ selectedDate }) => {
                         height: 16,
                         backgroundColor: selectedCategoria ? selectedCategoria.Cor : 'transparent',
                         borderRadius: '50%',
-                        marginRight: 1,
+                        marginRight: 1
                       }}
                     />
                     {selectedCategoria ? selectedCategoria.Nome : ''}

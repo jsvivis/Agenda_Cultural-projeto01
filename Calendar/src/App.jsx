@@ -20,11 +20,8 @@ import UpdateReacao from './components/reacao/updateReacao';
 import CreateEvento from './components/evento/createEvento';
 import SearchEvento from './components/evento/searchEvento';
 import UpdateEvento from './components/evento/updateEvento';
-import DetailsEvento from './components/evento/detailsEvento';
-import SignIn from './components/login/signIn';
 import Home from "./components/home";
 import Manager from './components/manager';
-import { AuthProvider, useAuth } from './components/login/authContext';
 
 function App() {
   return (
@@ -53,8 +50,6 @@ function App() {
             <Route path='/criarevento' element={<CreateEvento/>} />
             <Route path='/buscarevento' element={<SearchEvento/>} />
             <Route path="/atualizarevento/:id" element={<UpdateEvento/>} />
-            <Route path="/detailsevento/:id" element={<DetailsEvento/>} />
-            <Route path='/login' element={<SignIn />} />
         </Routes>
       </Router>
     </>

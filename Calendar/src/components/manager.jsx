@@ -175,7 +175,7 @@ export default function Manager() {
               </Paper>
             </Grid>
 
-            <Grid item xs={12} sm={10} md={8}>
+           {/*  <Grid item xs={12} sm={10} md={8}>
               <Paper elevation={6} sx={{ padding: 1 }}>
                 <Typography variant="h5" gutterBottom fontFamily='signika'>
                   Reação
@@ -199,7 +199,7 @@ export default function Manager() {
                   </Button>
                 </Box>
               </Paper>
-            </Grid>
+            </Grid> */}
           </Grid>
         </Box>
       </Container>

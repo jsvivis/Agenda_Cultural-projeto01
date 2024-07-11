@@ -196,14 +196,6 @@ function SearchEvento() {
                           >
                             Editar
                           </Button>
-                          <Button
-                            component={Link}
-                            to={`/detailsevento/${user.IdEvento}`}
-                            variant="contained"
-                            color="warning"
-                          >
-                            Detalhes
-                          </Button>
                         </Box>
                       </TableCell>
                     </TableRow>

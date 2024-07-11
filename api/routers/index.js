@@ -9,7 +9,6 @@ const imagemRouters = require("./imagemRouter.js");
 const categoriaRouters = require("./categoriaRouter.js");
 const categoriaEventoRouters = require("./categoriaEventoRouter.js");
 const reacaoRouters = require("./reacaoRouter.js");
-const reacaoUsuarioRouters = require("./reacaoUsuarioRouter.js");
 const exportRouters = require("./exportRouter.js");
 
 module.exports = function (app, express) {
@@ -26,6 +25,5 @@ module.exports = function (app, express) {
   app.use(categoriaRouters);
   app.use(categoriaEventoRouters);
   app.use(reacaoRouters);
-  app.use(reacaoUsuarioRouters);
   app.use(exportRouters);
 };

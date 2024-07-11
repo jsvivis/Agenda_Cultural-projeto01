@@ -34,6 +34,11 @@ class EspacoModel {
     return this.executeSQL(sql, id); 
   }
 
+  readEspaco(id) {
+    const sql = "SELECT Espaco.IdEspaco, Espaco.Nome, Espaco.Ativo, Espaco.IdEspacoCultural, EspacoCultural.Nome AS NomeEspacoCultural FROM Espaco JOIN EspacoCultural ON Espaco.IdEspacoCultural = EspacoCultural.IdEspacoCultural WHERE Espaco.IdEspaco = ?"; 
+    return this.executeSQL(sql, id); 
+  }
+
   search(parametro) {
     const sql = `
       SELECT Espaco.IdEspaco, Espaco.Nome, Espaco.Ativo, Espaco.IdEspacoCultural, EspacoCultural.Nome AS NomeEspacoCultural
