@@ -67,7 +67,7 @@ CREATE TABLE Evento (
     PublicoTotal INT,
     Ativo BOOLEAN DEFAULT FALSE,
     Liberado BOOLEAN DEFAULT FALSE,
-    IdUsuario INT,
+    IdUsuario INT NOT NULL,
     IdEspaco INT NOT NULL,
     IdCategoria INT NOT NULL,
     FOREIGN KEY (IdUsuario) REFERENCES Usuario(IdUsuario) ON DELETE CASCADE,

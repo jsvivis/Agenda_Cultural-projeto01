@@ -35,6 +35,7 @@ function CreateUser() {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+        //encriptar a senha antes do envio
         try {
             const response = await axios.post('http://localhost:3000/usuario', formData);
             console.log(response.data);

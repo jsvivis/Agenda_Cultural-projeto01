@@ -49,7 +49,7 @@ class EventoController {
     IdCategoria,
     PublicoTotal: parseInt(PublicoTotal), // Convertendo para inteiro
     Valor: parseFloat(Valor),
-    IdUsuario: 1
+    IdUsuario: 1 // até a pagina de de login não estiver pronta e funcional
   };
     const retorno = eventoModel.create(eventoData);
     return retorno
