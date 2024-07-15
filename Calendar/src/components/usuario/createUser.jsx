@@ -1,7 +1,8 @@
 // BIBLIOTECAS
 import React, { useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import bcrypt from 'bcryptjs';
 
 // FRAMEWORKS - MATERIAL UI
 import Avatar from '@mui/material/Avatar';
@@ -37,7 +38,9 @@ function CreateUser() {
         event.preventDefault();
         //encriptar a senha antes do envio
         try {
-            const response = await axios.post('http://localhost:3000/usuario', formData);
+            const salt = bcrypt.genSaltSync(10);
+            const hashedPassword = bcrypt.hashSync(formData.senha, salt);
+            const response = await axios.post('http://localhost:3000/usuario', { ...formData, senha: hashedPassword });
             console.log(response.data);
             setFormData({
                 nome: "",

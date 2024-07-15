@@ -1,7 +1,11 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+// BIBLIOTECAS
+import React from 'react';
+import { BrowserRouter, Routes, Route, Navigate, Router } from 'react-router-dom';
 
 // IMPORTAÇÕES
+import { AuthProvider, useAuth } from './components/login/authContext';
 import Navbar from './components/navbar';
+import Manager from './components/manager';
 import CreateUser from './components/usuario/createUser';
 import SearchUser from './components/usuario/searchUser';
 import UpdateUser from './components/usuario/updateUser';
@@ -20,17 +24,25 @@ import UpdateReacao from './components/reacao/updateReacao';
 import CreateEvento from './components/evento/createEvento';
 import SearchEvento from './components/evento/searchEvento';
 import UpdateEvento from './components/evento/updateEvento';
-import Home from "./components/home";
-import Manager from './components/manager';
+import DetailsEvento from './components/evento/detailsEvento';
+import Home from './components/home';
+import Login from './components/login/login';
+import PrivateRoute from './components/login/privateRoute';
+
 
 function App() {
+  const { user } = useAuth;
+  console.log('user app' , user)
   return (
-    <>
-      <Router>
-        <Navbar />
-
-          <Routes>
-            <Route exact path='/' element={<Home/>} />
+    <AuthProvider>
+      <BrowserRouter>
+        <div>
+          <Navbar />
+        </div>
+        <Routes>
+          <Route exact path='/login' element={<Login />} />
+          <Route element={<PrivateRoute />}>
+          <Route exact path='/' element={<Home/>} />
             <Route path="/manager" element={<Manager />} />
             <Route path='/criarusuario' element={<CreateUser/>} />
             <Route path='/buscarusuario' element={<SearchUser/>} />
@@ -50,10 +62,12 @@ function App() {
             <Route path='/criarevento' element={<CreateEvento/>} />
             <Route path='/buscarevento' element={<SearchEvento/>} />
             <Route path="/atualizarevento/:id" element={<UpdateEvento/>} />
+            <Route path="/detailsevento/:id" element={<DetailsEvento/>} />
+          </Route>
         </Routes>
-      </Router>
-    </>
-  )
+      </BrowserRouter>
+    </AuthProvider>
+  );
 }
 
 export default App;

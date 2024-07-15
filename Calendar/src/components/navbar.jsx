@@ -1,13 +1,12 @@
 // BIBLIOTECAS
 import React from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { useAuth } from './login/authContext';
+import { Button } from '@mui/material';
 
 // FRAMEWORKS - MATERIAL UI
 import { Box, Typography, IconButton, CssBaseline, TextField, InputAdornment, InputBase } from '@mui/material';
 import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import NotificationsIcon from '@mui/icons-material/Notifications';
-import SearchIcon from '@mui/icons-material/Search';
 import HandymanIcon from '@mui/icons-material/Handyman';
 
 const theme = createTheme();
