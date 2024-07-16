@@ -99,43 +99,57 @@ function SearchReacao() {
           <Typography component="h1" variant="h5">
             Pesquisar Reação
           </Typography>
-          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 3, width: '100%', maxWidth: 600, margin: '0 auto' }}>
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="searchTerm"
-              label="Pesquisar Reação"
-              name="searchTerm"
-              autoComplete="searchTerm"
-              autoFocus
-              value={searchTerm}
-              onChange={handleChange}
-              placeholder="Digite o nome"
-              sx={{ maxWidth: 'calc(100% - 120px)', display: 'inline-block' }} // Ajuste de largura do campo de pesquisa
-            />
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={showActiveOnly}
-                  onChange={handleCheckboxChange}
-                  name="showActiveOnly"
-                  color="primary"
+          <Box
+              component="form"
+              onSubmit={handleSubmit}
+              noValidate
+              sx={{
+                mt: 3,
+                width: '100%',
+                maxWidth: 600,
+                margin: '0 auto',
+              }}
+            >
+              <Box sx={{ display: 'flex', justifyContent: 'center', mb: 2 }}>
+                <TextField
+                  margin="normal"
+                  required
+                  fullWidth
+                  id="searchTerm"
+                  label="Pesquisar Reação"
+                  name="searchTerm"
+                  autoComplete="searchTerm"
+                  autoFocus
+                  value={searchTerm}
+                  onChange={handleChange}
+                  placeholder="Digite o nome"
+                  sx={{ maxWidth: 'calc(100% - 120px)' }}
                 />
-              }
-              label="Mostrar apenas reações ativas"
-              sx={{ display: 'inline-block', verticalAlign: 'middle' }}
-            />
-            <Box sx={{ display: 'flex', justifyContent: 'center', mt: 3, mb: 2 }}>
-              <Button
-                type="submit"
-                variant="contained"
-                sx={{ width: 150 }} // Botão de busca menor
-              >
-                Buscar
-              </Button>
+              </Box>
+              <Box sx={{ display: 'flex', justifyContent: 'center', mb: 2 }}>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={showActiveOnly}
+                      onChange={handleCheckboxChange}
+                      name="showActiveOnly"
+                      color="primary"
+                    />
+                  }
+                  label="Mostrar apenas reações ativas"
+                  sx={{ display: 'flex', alignItems: 'center' }}
+                />
+              </Box>
+              <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                <Button
+                  type="submit"
+                  variant="contained"
+                  sx={{ width: 150 }}
+                >
+                  Buscar
+                </Button>
+              </Box>
             </Box>
-          </Box>
           {error && <Alert severity="error" sx={{ mt: 2 }}>{error}</Alert>}
           {reacoes.length > 0 && (
             <TableContainer component={Paper} sx={{ mt: 3, width: '100%', maxHeight: 400, overflow: 'auto', border: '1px solid #ccc', borderRadius: '8px' }}>

@@ -6,6 +6,7 @@
 # modules
 .Calendar/node_modules/*
 .API/node_modules/*
+desktop.ini
 
 # User-specific files
 *.rsuser

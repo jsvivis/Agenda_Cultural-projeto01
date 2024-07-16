@@ -114,6 +114,16 @@ function SearchEvento() {
               onChange={handleChange}
               placeholder="Digite o nome do evento"
             />
+          <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 2 }}>
+            <Checkbox
+              checked={showActiveOnly}
+              onChange={handleCheckboxChange}
+              color="primary"
+            />
+            <Typography variant="body1">
+              Mostrar somente eventos ativos
+            </Typography>
+          </Box>
             <Box sx={{ display: 'flex', justifyContent: 'center', mt: 3, mb: 2 }}>
               <Button
                 fullWidth
@@ -124,16 +134,6 @@ function SearchEvento() {
                 Buscar
               </Button>
             </Box>
-          </Box>
-          <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 2 }}>
-            <Checkbox
-              checked={showActiveOnly}
-              onChange={handleCheckboxChange}
-              color="primary"
-            />
-            <Typography variant="body1">
-              Mostrar somente eventos ativos
-            </Typography>
           </Box>
           {error && (
             <Alert severity="error" sx={{ mt: 2, width: "100%" }}>

@@ -91,12 +91,23 @@ function SearchEspacoCultural() {
           }}
         >
           <Avatar sx={{ m: 1, bgcolor: 'success.main' }}>
-              <MuseumOutlinedIcon />
+            <MuseumOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
             Pesquisar Espaço Cultural
           </Typography>
-          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1, width: "30%", margin: "0 auto" }}>
+          <Box
+            component="form"
+            onSubmit={handleSubmit}
+            noValidate
+            sx={{
+              mt: 1,
+              width: "50%",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
             <TextField
               margin="normal"
               required
@@ -109,7 +120,7 @@ function SearchEspacoCultural() {
               value={searchTerm}
               onChange={handleChange}
               placeholder="Digite o nome ou email do espaço cultural"
-              sx={{ maxWidth: 'calc(100% - 120px)', display: 'inline-block' }} // Ajuste de largura do campo de pesquisa
+              sx={{ marginBottom: 1, width: '100%' }}
             />
             <FormControlLabel
               control={
@@ -121,11 +132,10 @@ function SearchEspacoCultural() {
                 />
               }
               label="Mostrar apenas espaços culturais ativos"
-              sx={{ display: 'inline-block', verticalAlign: 'middle' }}
+              sx={{ alignSelf: 'center' }}
             />
             <Box sx={{ display: 'flex', justifyContent: 'center', mt: 3, mb: 2 }}>
               <Button
-                fullWidth
                 type="submit"
                 variant="contained"
                 sx={{ width: 150 }}

@@ -61,7 +61,7 @@ class EventoController {
 
   update(req, res) {
     const { id } = req.params;
-    const { Descricao, HorarioInicial, HorarioFinal, IdEspaco, Nome, PublicoTotal, Valor, IdCategoria } = req.body;
+    const { Descricao, HorarioInicial, HorarioFinal, IdEspaco, Nome, PublicoTotal, Valor, IdCategoria, Ativo } = req.body;
 
     const eventoData = {
       Descricao,
@@ -70,6 +70,7 @@ class EventoController {
       IdEspaco,
       Nome,
       IdCategoria,
+      Ativo,
       PublicoTotal: parseInt(PublicoTotal), // Convertendo para inteiro
       Valor: parseFloat(Valor) // Convertendo para float
     };

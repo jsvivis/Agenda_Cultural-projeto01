@@ -62,7 +62,8 @@ const BigCalendarComponent = ({ selectedDate }) => {
     const fetchEvents = async () => {
       try {
         const response = await axios.get('http://localhost:3000/evento');
-        const formattedEvents = response.data.map(evento => ({
+        const activeEvents = response.data.filter(evento => evento.Ativo);
+        const formattedEvents = activeEvents.map(evento => ({
           id: evento.IdEvento,
           title: evento.Nome,
           start: new Date(evento.HorarioInicial),
@@ -74,6 +75,7 @@ const BigCalendarComponent = ({ selectedDate }) => {
           idEspaco: evento.IdEspaco,
           idCategoria: evento.IdCategoria,
           categoriaCor: evento.CorCategoria,
+          ativo: evento.Ativo
         }));
         setEvents(formattedEvents);
         setFilteredEvents(formattedEvents);
@@ -81,7 +83,7 @@ const BigCalendarComponent = ({ selectedDate }) => {
         console.error('Erro ao buscar eventos:', error);
       }
     };
-
+  
     fetchEvents();
   }, []);
 
@@ -217,7 +219,6 @@ const BigCalendarComponent = ({ selectedDate }) => {
     month: 'Mês',
     week: 'Semana',
     day: 'Dia',
-    agenda: 'Agenda',
     date: 'Data',
     time: 'Hora',
     event: 'Evento',
@@ -347,7 +348,7 @@ const BigCalendarComponent = ({ selectedDate }) => {
           startAccessor="start"
           endAccessor="end"
           defaultView="month"
-          views={['day', 'week', 'month', 'agenda']}
+          views={['day', 'week', 'month']}
           selectable
           step={15} // Intervalo de minutos entre os slots de tempo
           timeslots={4} 
@@ -377,13 +378,13 @@ const BigCalendarComponent = ({ selectedDate }) => {
                 onChange={handleEspacoCulturalChange}
               >
                 <MenuItem value="">
-                  <em>Limpar filtro</em>
-                </MenuItem>
-                {espacosCulturais.map((espacoCultural) => (
-                  <MenuItem key={espacoCultural.IdEspacoCultural} value={espacoCultural.IdEspacoCultural}>
-                    {espacoCultural.Nome}
+                    <em>Todos</em>
                   </MenuItem>
-                ))}
+                  {espacosCulturais.filter(espacoCultural => espacoCultural.Ativo).map((espacoCultural) => (
+                    <MenuItem key={espacoCultural.IdEspacoCultural} value={espacoCultural.IdEspacoCultural}>
+                      {espacoCultural.Nome}
+                    </MenuItem>
+                  ))}
               </Select>
             </FormControl>
           </Grid>
@@ -399,13 +400,13 @@ const BigCalendarComponent = ({ selectedDate }) => {
                 disabled={!selectedEspacoCultural}
               >
                 <MenuItem value="">
-                  <em>Limpar filtro</em>
-                </MenuItem>
-                {espacos.map((espaco) => (
-                  <MenuItem key={espaco.IdEspaco} value={espaco.IdEspaco}>
-                    {espaco.Nome}
+                    <em>Todos</em>
                   </MenuItem>
-                ))}
+                  {espacos.filter(espaco => espaco.Ativo).map((espaco) => (
+                    <MenuItem key={espaco.IdEspaco} value={espaco.IdEspaco}>
+                      {espaco.Nome}
+                    </MenuItem>
+                  ))}
               </Select>
             </FormControl>
           </Grid>
@@ -438,25 +439,25 @@ const BigCalendarComponent = ({ selectedDate }) => {
               }}
             >
               <MenuItem value="">
-                <em>Limpar filtro</em>
-              </MenuItem>
-              {categorias.map((categoria) => (
-                <MenuItem key={categoria.IdCategoria} value={categoria.IdCategoria}>
-                  <Box display="flex" alignItems="center">
-                    <Box
-                      component="span"
-                      sx={{
-                        width: 16,
-                        height: 16,
-                        backgroundColor: categoria.Cor,
-                        borderRadius: '50%',
-                        marginRight: 1,
-                      }}
-                    />
-                    {categoria.Nome}
-                  </Box>
+                  <em>Todos</em>
                 </MenuItem>
-              ))}
+                {categorias.filter(categoria => categoria.Ativo).map((categoria) => (
+                  <MenuItem key={categoria.IdCategoria} value={categoria.IdCategoria}>
+                    <Box display="flex" alignItems="center">
+                      <Box
+                        component="span"
+                        sx={{
+                          width: 16,
+                          height: 16,
+                          backgroundColor: categoria.Cor,
+                          borderRadius: '50%',
+                          marginRight: 1,
+                        }}
+                      />
+                      {categoria.Nome}
+                    </Box>
+                  </MenuItem>
+                ))}
             </Select>
           </FormControl>
 

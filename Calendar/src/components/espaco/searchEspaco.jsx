@@ -115,16 +115,17 @@ function SearchEspaco() {
               placeholder="Digite o nome do espaço"
             />
             <FormControlLabel
-              control={
-                <Checkbox
-                  checked={filterAtivo}
-                  onChange={handleFilterChange}
-                  color="primary"
-                />
-              }
-              label="Mostrar apenas espaços ativos"
-              sx={{ mt: 2 }}
-            />
+                control={
+                  <Checkbox
+                    checked={filterAtivo}
+                    onChange={handleFilterChange}
+                    color="primary"
+                    sx={{ alignSelf: 'center' }} // Centraliza verticalmente o Checkbox
+                  />
+                }
+                label="Mostrar apenas espaços ativos"
+                sx={{ mt: 2, display: 'flex', justifyContent: 'center' }}
+              />
             <Box sx={{ display: 'flex', justifyContent: 'center', mt: 3, mb: 2 }}>
               <Button
                 type="submit"
