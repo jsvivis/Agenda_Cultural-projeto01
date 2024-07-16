@@ -51,3 +51,5 @@ Esperamos ter conseguido descrever completamente o processo de desenvolvimento e
 _**Futuramente temos a intenção de seguir com o desenvolvimento do projeto para uma maior expansão 
 de suas capacidades e funcionalidades.
 Fazendo assim que sua utilidade possa ser cada vez maior e mais requisitada.**_
+
+# _**>> Agradecemos seu interesse em nosso projeto! <<**_
