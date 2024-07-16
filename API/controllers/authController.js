@@ -28,7 +28,8 @@ class AuthController {
 
       const token = jwt.sign({ id: user.IdUsuario }, 'your_jwt_secret', { expiresIn: '1h' });
 
-      return res.status(200).json({ token, usuario: {id: user[0].IdUsuario, email: user[0].Email, nome: user[0].Nome, password: user[0].Senha} });
+      //return res.status(200).json({ token, usuario: {id: user[0].IdUsuario, email: user[0].Email, nome: user[0].Nome} });
+      return res.status(200).json({id: user[0].IdUsuario, email: user[0].Email, nome: user[0].Nome});
     } catch (error) {
       console.error('Erro durante o login:', error);
       res.status(500).json({ message: 'Erro no servidor' });

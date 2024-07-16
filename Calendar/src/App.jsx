@@ -31,8 +31,6 @@ import PrivateRoute from './components/login/privateRoute';
 
 
 function App() {
-  const { user } = useAuth;
-  console.log('user app' , user)
   return (
     <AuthProvider>
       <BrowserRouter>
