@@ -21,7 +21,7 @@ const MyCalendar = ({ onDateChange }) => {
       <Calendar
           onChange={handleDateChange}
           value={date}
-          locale="en-US" 
+          locale="pt-BR" 
       />
     </Paper>
   );

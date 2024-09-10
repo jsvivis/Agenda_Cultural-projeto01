@@ -29,7 +29,6 @@ import Home from './components/home';
 import Login from './components/login/login';
 import PrivateRoute from './components/login/privateRoute';
 
-
 function App() {
   return (
     <AuthProvider>

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Calendar as BigCalendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
+import "moment/locale/pt-BR";
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import {
   Container,
@@ -23,8 +24,16 @@ import {
 } from '@mui/material';
 import '../styles/bigCalendar.css';
 import { Alert } from '@mui/material';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 const localizer = momentLocalizer(moment);
+
+const theme = createTheme({
+  palette: { secondary: {
+    main: '#00695f',
+  },
+},
+});
 
 const BigCalendarComponent = ({ selectedDate }) => {
   const [events, setEvents] = useState([]);
@@ -181,7 +190,7 @@ const BigCalendarComponent = ({ selectedDate }) => {
   };
 
   const handleDateChange = (newDate) => {
-    setCurrentDate(newDate);
+    setCurrentDate(newDate); 
   };
 
 
@@ -356,7 +365,7 @@ const BigCalendarComponent = ({ selectedDate }) => {
           onSelectEvent={handleSelectEvent}
           eventPropGetter={(event) => ({
             style: {
-              backgroundColor: event.categoriaCor || '#3174ad', // Cor padrão
+              backgroundColor: event.categoriaCor || '#00695f', // Cor padrão
             },
           })}
           style={{ height: '100%', width: '100%' }}
@@ -631,10 +640,10 @@ const BigCalendarComponent = ({ selectedDate }) => {
             </FormControl>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="primary">
+          <Button onClick={handleClose} color="secondary">
             Cancelar
           </Button>
-          <Button onClick={handleSave} color="primary">
+          <Button onClick={handleSave} color="secondary">
             Salvar
           </Button>
         </DialogActions>

@@ -6,7 +6,13 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import HandymanIcon from '@mui/icons-material/Handyman';
 import { Button } from '@mui/material';
 
-const theme = createTheme();
+
+const theme = createTheme({
+  palette: { secondary: {
+      main: '#00695f',
+    },
+  },
+});
 
 export default function Navbar() {
   const { user, logout } = useAuth(); // Obtém o usuário e a função de logout do contexto de autenticação
@@ -33,17 +39,16 @@ export default function Navbar() {
           alignItems: 'center',
           width: '100%',
           height: '80px',
-          backgroundColor: '#1E90FF',
+          backgroundColor: '#66aea6',
           m: 0,
           p: 0,
         }}
       >
         <Typography
-          variant="h4"
+          variant="h3"
           component="h1"
           sx={{
-            width: '27%',
-            color: '#fff',
+            color: '#000',
             display: 'flex',
             justifyContent: 'center',
           }}
@@ -51,24 +56,25 @@ export default function Navbar() {
           <Link
             to="/"
             style={{
-              color: '#FFF',
+              color: '#000',
               textDecoration: 'none',
               fontFamily: 'Varela Round',
-              marginLeft: '40px',
+              marginLeft: '60px',
+              fontWeight:"fontWeightBold",
             }}
           >
             AGENDA CULTURAL
           </Link>
         </Typography>
         {user && (
-          <Box sx={{ display: 'flex', alignItems: 'center', ml: 'auto', mr: 6 }}>
-            <Typography variant="body1" sx={{ color: '#fff', mr: 3 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', ml: 'auto', mr: 6, fontWeight:"fontWeightBold"}}>
+            <Typography variant="bold" sx={{ color: '#000', mr: 3}}>
               Olá, {userName}.
             </Typography>
-            <IconButton component={Link} to="/manager" sx={{ color: '#fff' }}>
+            <IconButton component={Link} to="/manager" sx={{ color: '#00695f' }}>
               <HandymanIcon fontSize="large" />
             </IconButton>
-            <Button variant="contained" color="primary" onClick={logout} sx={{ ml: 2 }}>
+            <Button variant="contained" color="secondary" onClick={logout} sx={{ ml: 2 }}>
               Sair
             </Button>
           </Box>

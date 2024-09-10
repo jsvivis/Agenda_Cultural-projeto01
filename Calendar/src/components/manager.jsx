@@ -15,7 +15,12 @@ import {
   createTheme,
 } from "@mui/material";
 
-const theme = createTheme();
+const theme = createTheme({
+  palette: { secondary: {
+    main: '#00695f',
+  },
+},
+});
 
 export default function Manager() {
   return (
@@ -24,7 +29,8 @@ export default function Manager() {
       <Container component="main" maxWidth="md">
         <Box
           sx={{
-            marginTop: 5,
+            marginTop: 1,
+            marginbutton: 1,
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
@@ -32,7 +38,7 @@ export default function Manager() {
             paddingBottom:'30px'
           }}
         >
-          <Typography component="h1" variant="h4" gutterBottom fontFamily='signika'>
+          <Typography component="h1" variant="h3" gutterBottom fontFamily='signika'>
             <b>Gerenciador</b>
           </Typography>
 
@@ -47,7 +53,7 @@ export default function Manager() {
                     component={RouterLink}
                     to="/criarevento"
                     variant="contained"
-                    color="primary"
+                    color="secondary"
                   >
                     Cadastrar
                   </Button>
@@ -55,7 +61,7 @@ export default function Manager() {
                     component={RouterLink}
                     to="/buscarevento"
                     variant="contained"
-                    color="primary"
+                    color="secondary"
                   >
                     Pesquisar
                   </Button>
@@ -63,7 +69,7 @@ export default function Manager() {
                     component={RouterLink}
                     to="/gerenciarevento"
                     variant="contained"
-                    color="primary"
+                    color="secondary"
                   >
                     Gerenciar
                   </Button>
@@ -81,7 +87,7 @@ export default function Manager() {
                     component={RouterLink}
                     to="/criarusuario"
                     variant="contained"
-                    color="primary"
+                    color="secondary"
                   >
                     Cadastrar
                   </Button>
@@ -89,7 +95,7 @@ export default function Manager() {
                     component={RouterLink}
                     to="/buscarusuario"
                     variant="contained"
-                    color="primary"
+                    color="secondary"
                   >
                     Pesquisar
                   </Button>
@@ -107,7 +113,7 @@ export default function Manager() {
                     component={RouterLink}
                     to="/criarespacocultural"
                     variant="contained"
-                    color="primary"
+                    color="secondary"
                   >
                     Cadastrar
                   </Button>
@@ -115,7 +121,7 @@ export default function Manager() {
                     component={RouterLink}
                     to="/buscarespacocultural"
                     variant="contained"
-                    color="primary"
+                    color="secondary"
                   >
                     Pesquisar
                   </Button>
@@ -133,7 +139,7 @@ export default function Manager() {
                     component={RouterLink}
                     to="/criarespaco"
                     variant="contained"
-                    color="primary"
+                    color="secondary"
                   >
                     Cadastrar
                   </Button>
@@ -141,7 +147,7 @@ export default function Manager() {
                     component={RouterLink}
                     to="/buscarespaco"
                     variant="contained"
-                    color="primary"
+                    color="secondary"
                   >
                     Pesquisar
                   </Button>
@@ -159,7 +165,7 @@ export default function Manager() {
                     component={RouterLink}
                     to="/criarcategoria"
                     variant="contained"
-                    color="primary"
+                    color="secondary"
                   >
                     Cadastrar
                   </Button>
@@ -167,7 +173,7 @@ export default function Manager() {
                     component={RouterLink}
                     to="/buscarcategoria"
                     variant="contained"
-                    color="primary"
+                    color="secondary"
                   >
                     Pesquisar
                   </Button>
@@ -185,7 +191,7 @@ export default function Manager() {
                     component={RouterLink}
                     to="/criarreacao"
                     variant="contained"
-                    color="primary"
+                    color="secondary"
                   >
                     Cadastrar
                   </Button>
@@ -193,7 +199,7 @@ export default function Manager() {
                     component={RouterLink}
                     to="/buscarreacao"
                     variant="contained"
-                    color="primary"
+                    color="secondary"
                   >
                     Pesquisar
                   </Button>
