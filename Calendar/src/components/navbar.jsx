@@ -53,7 +53,7 @@ export default function Navbar() {
             justifyContent: 'center',
           }}
         >
-          <Link
+          <Link 
             to="/"
             style={{
               color: '#000',

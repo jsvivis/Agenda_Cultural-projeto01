@@ -29,7 +29,7 @@ function CreateReacao() {
     const [successMessage, setSuccessMessage] = useState("");
     const [anchorEl, setAnchorEl] = useState(null); // Estado para controlar a abertura do seletor de emoticons
 
-    const emoticons = ["😊", "😄", "😍", "😂"]; // Exemplo de emoticons disponíveis
+    const emoticons = ["😊", "😄", "😍", "😂","🤩","🙁", "😡", "👍", "👏"]; // Exemplo de emoticons disponíveis
 
     const handleChange = (event) => {
         const { name, value } = event.target;

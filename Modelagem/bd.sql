@@ -65,8 +65,8 @@ CREATE TABLE Evento (
     Valor DOUBLE,
     Publico INT,
     PublicoTotal INT,
-    Ativo BOOLEAN DEFAULT FALSE,
-    Liberado BOOLEAN DEFAULT FALSE,
+    Ativo BOOLEAN DEFAULT TRUE,
+    Liberado BOOLEAN DEFAULT TRUE,
     IdUsuario INT NOT NULL,
     IdEspaco INT NOT NULL,
     IdCategoria INT NOT NULL,
@@ -139,7 +139,7 @@ INSERT INTO Perfil (PerfilUsuario) VALUES
 /* Inserir dados fictícios na tabela Usuario */
 INSERT INTO Usuario (Nome, Email, Senha, Ativo, IdPerfil) VALUES 
 ('Admin User', 'admin@admin', '123', TRUE, 1),
-('Regular User', 'regular@user', '123', TRUE, 2);
+('Regular User', 'regular@user', '123', TRUE, 2),
 
 /* Inserir dados fictícios na tabela Categoria */
 INSERT INTO Categoria (Nome, Ativo, Cor) VALUES 
@@ -211,7 +211,13 @@ INSERT INTO Link (Link, IdEvento) VALUES
 INSERT INTO Reacao (Nome, Emoticon, Ativo) VALUES 
 ('Gostei', '1F60A', TRUE), 
 ('Amei', '1F60D', TRUE), 
-('Haha', '1F602', TRUE);
+('Haha', '1F602', TRUE),
+('Muito Bom', '1F44D', TRUE),
+('Parabéns!', '1F44F', TRUE),
+('Incrível', '1F60D', TRUE),
+('Não Gostei', '2639', TRUE),
+('Odiei', '1F621', TRUE ),
+('Feliz', '1F604', TRUE);
 
 /* Inserir dados fictícios na tabela ReacaoUsuario */
 INSERT INTO ReacaoUsuario (IdReacao, IdUsuario, IdEvento) VALUES 

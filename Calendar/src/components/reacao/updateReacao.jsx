@@ -92,7 +92,7 @@ function UpdateReacao() {
   const open = Boolean(anchorEl);
   const idPopover = open ? "emoticon-popover" : undefined;
 
-  const emoticons = ["😊", "😄", "😍", "😂"]; // Exemplo de emoticons disponíveis
+  const emoticons = ["😊", "😄", "😍", "😂","🤩","🙁", "😡", "👍", "👏"]; // Exemplo de emoticons disponíveis
 
   const handleEmoticonSelect = (emoticon) => {
     setUser({ ...user, Emoticon: emoticon });

@@ -6,6 +6,14 @@ import { TextField, Button, Container, Typography, Box, Paper, Link, InputAdornm
 import EmailIcon from '@mui/icons-material/Email';
 import LockIcon from '@mui/icons-material/Lock';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+
+const theme = createTheme({
+  palette: { secondary: {
+    main: '#00695f',
+  },
+},
+});
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -24,9 +32,9 @@ const Login = () => {
   };
 
   return (
-    <Box display="flex" justifyContent="center" alignItems="center" height="70vh" bgcolor="#f0f0f0">
-      <Paper elevation={3} style={{ padding: '40px', borderRadius: '8px', maxWidth: '500px', width: '100%' }}>
-        <Box display="flex" justifyContent="center" alignItems="center" flexDirection="column">
+    <Box display="flex" justifyContent="center" alignItems="center" height="80vh" bgcolor="#fff">
+      <Paper elevation={3} style={{ padding: '40px', borderRadius: '8px', maxWidth: '500px', width: '100%'}}>
+        <Box display="flex" justifyContent="center" alignItems="center" flexDirection="column" >
           <Avatar sx={{ m: 1, bgcolor: 'success.main' }}>
             <LockOutlinedIcon />
           </Avatar>

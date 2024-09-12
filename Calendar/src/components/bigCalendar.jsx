@@ -221,19 +221,23 @@ const BigCalendarComponent = ({ selectedDate }) => {
   };
 
   const messages = {
-    allDay: 'Dia inteiro',
-    previous: 'Anterior',
-    next: 'Próximo',
-    today: 'Hoje',
-    month: 'Mês',
-    week: 'Semana',
-    day: 'Dia',
-    date: 'Data',
-    time: 'Hora',
-    event: 'Evento',
-    noEventsInRange: 'Não há eventos neste intervalo',
-    showMore: total => `+${total} mais`,
-  };
+date: 'Data',
+time: 'Hora',
+event: 'Evento',
+allDay: 'Dia inteiro',
+week: 'Semana',
+work_week: 'Semana de trabalho',
+day: 'Dia',
+month: 'Mês',
+previous: 'Anterior',
+next: 'Próximo',
+yesterday: 'Ontem',
+tomorrow: 'Amanhã',
+today: 'Hoje',
+agenda: 'Agenda',
+noEventsInRange: 'Não há eventos neste intervalo.',
+showMore: total => `+${total} mais`,
+};
 
 
   const handleSelectEvent = async (event) => {
